@@ -1,0 +1,27 @@
+### Game ideas ###
+
+
+Casse Brique dans une mine ? On a plusieurs niveaux et on améliore notre balle pour miner de meilleurs minéraux
+- tireur de balle pour aller plus vite
+- différent type de balle : normale, dynamite, bombe
+- block qui dropent des bonus à ramasser
+- block qui dropent des objets à esquiver (bloc de magma qui drop de la lave)
+- block avec plusieurs points de vie
+- on gagne de l'argent -> augmenter la vitesse de la balle, augmenter les dégats de la balle
+- Combo quand balle tape plusieurs briques avant de retomber, retoucher le joueur
+
+### Juicyness ###
+
+Player : 
+- Au démarrage, on choisi la direction dans laquelle la balle se lance.
+
+Balle : 
+- petit squish/squash on hit
+
+
+Briques :
+- spawn progressif
+
+### Outils ###
+
+- créateur de grille de niveau
