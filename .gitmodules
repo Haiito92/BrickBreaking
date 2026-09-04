@@ -1,0 +1,3 @@
+[submodule "Plugins/LittleDebug"]
+	path = Plugins/LittleDebug
+	url = https://github.com/Haiito92/LittleDebugUnreal.git
