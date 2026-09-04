@@ -8686,6 +8686,18 @@
 		{
 			"Path": "$(ProjectDir)/Binaries/Win64/UnrealEditor.modules",
 			"Type": "RequiredResource"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/LittleDebug/Binaries/Win64/UnrealEditor-LittleDebug.dll",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/LittleDebug/Binaries/Win64/UnrealEditor-LittleDebug.pdb",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/LittleDebug/Binaries/Win64/UnrealEditor.modules",
+			"Type": "RequiredResource"
 		}
 	],
 	"RuntimeDependencies": [
@@ -33560,6 +33572,10 @@
 		{
 			"Path": "$(ProjectDir)/BrickBreaking.uproject",
 			"Type": "UFS"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/LittleDebug/LittleDebug.uplugin",
+			"Type": "UFS"
 		}
 	],
 	"BuildPlugins": [
@@ -33696,6 +33712,7 @@
 		"LevelSequenceNavigatorBridge",
 		"LightMixer",
 		"LinuxDeviceProfileSelector",
+		"LittleDebug",
 		"LocalizableMessage",
 		"LocationServicesBPLibrary",
 		"MP4Utilities",
