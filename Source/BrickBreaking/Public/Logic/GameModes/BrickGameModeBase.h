@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "BrickGameModeBase.generated.h"
 
+class UUIEventHolder;
 class ABrickHUDBase;
 class ABrickPlayerControllerBase;
 /**
@@ -19,20 +20,26 @@ class BRICKBREAKING_API ABrickGameModeBase : public AGameModeBase
 protected:
 	virtual void BeginPlay() override;
 	
-private:
-	virtual bool InitializeGame();
-	virtual bool InitializeUI();
-	
 	UFUNCTION(BlueprintCallable)
 	virtual void StartGame();
 	UFUNCTION(BlueprintCallable)
 	virtual void EndGame();
 	
 	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UUIEventHolder> UIEventHolder;
+	
+	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<ABrickPlayerControllerBase> PlayerController;
 	
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<ABrickHUDBase> HUD;
+	
+private:
+	virtual bool InitializeGame();
+	virtual bool InitializeUI();
+	
+	
+	
 	
 	
 };

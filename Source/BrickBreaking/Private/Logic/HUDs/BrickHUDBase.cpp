@@ -3,24 +3,33 @@
 
 #include "BrickBreaking/Public/Logic/HUDs/BrickHUDBase.h"
 
-#include "DebugLibrary.h"
+#include "GameplayTagContainer.h"
+#include "LittleDebugLibrary.h"
+#include "MessageType.h"
 
-bool ABrickHUDBase::InitializeHUD(ABrickPlayerControllerBase* PlayerController, UUIEventHolder* InUIEventHolder)
+bool ABrickHUDBase::InitializeHUD(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder)
 {
-	if (!InternalInitialize(PlayerController, InUIEventHolder))
+	FGameplayTag GameLoopTag = FGameplayTag::RequestGameplayTag("GameLoop");
+	if (!InternalInitialize(InPlayerController, InUIEventHolder))
 	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
+			"[ABrickHUDBase] Failed internal init!", FColor::Red, 3.0f);
 		return false;
 	}
-	ReceiveInternalInitialize(PlayerController, InUIEventHolder);
+	ReceiveInternalInitialize(InPlayerController, InUIEventHolder);
 	
 	if (!CreateWidgets())
 	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
+			"[ABrickHUDBase] Failed create widgets!", FColor::Red, 3.0f);
 		return false;
 	}
 	ReceiveCreateWidgets();
 	
 	if (!InitializeWidgets())
 	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
+			"[ABrickHUDBase] Failed init widgets!", FColor::Red, 3.0f);
 		return false;
 	}
 	ReceiveInitializeWidgets();
@@ -33,7 +42,7 @@ void ABrickHUDBase::StartHUD()
 	ReceiveStartHUD();
 }
 
-bool ABrickHUDBase::InternalInitialize(ABrickPlayerControllerBase* PlayerController, UUIEventHolder* InUIEventHolder)
+bool ABrickHUDBase::InternalInitialize(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder)
 {
 	UIEventHolder = InUIEventHolder;
 	return true;

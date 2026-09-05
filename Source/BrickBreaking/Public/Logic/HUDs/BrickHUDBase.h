@@ -17,14 +17,14 @@ class BRICKBREAKING_API ABrickHUDBase : public AHUD
 	GENERATED_BODY()
 	
 public:
-	virtual bool InitializeHUD(ABrickPlayerControllerBase* PlayerController, UUIEventHolder* InUIEventHolder);
+	virtual bool InitializeHUD(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder);
 	virtual void StartHUD();
 	
 protected:
-	virtual bool InternalInitialize(ABrickPlayerControllerBase* PlayerController, UUIEventHolder* InUIEventHolder);
+	virtual bool InternalInitialize(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder);
 	
 	UFUNCTION(BlueprintImplementableEvent)
-	void ReceiveInternalInitialize(ABrickPlayerControllerBase* PlayerController, UUIEventHolder* InUIEventHolder);
+	void ReceiveInternalInitialize(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder);
 
 	virtual bool CreateWidgets();
 	
@@ -38,7 +38,7 @@ protected:
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void ReceiveStartHUD();
-private:
+	
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<ABrickPlayerControllerBase> PlayerController;
 	
