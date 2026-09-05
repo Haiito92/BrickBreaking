@@ -21,17 +21,20 @@ public:
 	virtual void StartHUD();
 	
 protected:
-	virtual bool InternalInitialize(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder);
+	UFUNCTION(BlueprintNativeEvent)
+	bool InternalInitialize(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder);
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void ReceiveInternalInitialize(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder);
 
-	virtual bool CreateWidgets();
+	UFUNCTION(BlueprintNativeEvent)
+	bool CreateWidgets();
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void ReceiveCreateWidgets();
 	
-	virtual bool InitializeWidgets();
+	UFUNCTION(BlueprintNativeEvent)
+	bool InitializeWidgets();
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void ReceiveInitializeWidgets();

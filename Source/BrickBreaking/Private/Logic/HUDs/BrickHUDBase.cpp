@@ -42,18 +42,18 @@ void ABrickHUDBase::StartHUD()
 	ReceiveStartHUD();
 }
 
-bool ABrickHUDBase::InternalInitialize(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder)
+bool ABrickHUDBase::InternalInitialize_Implementation(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder)
 {
 	UIEventHolder = InUIEventHolder;
 	return true;
 }
 
-bool ABrickHUDBase::CreateWidgets()
+bool ABrickHUDBase::CreateWidgets_Implementation()
 {
 	return true;
 }
 
-bool ABrickHUDBase::InitializeWidgets()
+bool ABrickHUDBase::InitializeWidgets_Implementation()
 {
 	return true;
 }

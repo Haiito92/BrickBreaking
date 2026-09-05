@@ -20,10 +20,20 @@ class BRICKBREAKING_API ABrickGameModeBase : public AGameModeBase
 protected:
 	virtual void BeginPlay() override;
 	
-	UFUNCTION(BlueprintCallable)
-	virtual void StartGame();
-	UFUNCTION(BlueprintCallable)
-	virtual void EndGame();
+	UFUNCTION(BlueprintNativeEvent)
+	bool InitializeGame();
+	UFUNCTION(BlueprintNativeEvent)
+	bool InitializeUI();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void StartGame();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void EndGame();
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void OnPlayClicked();
+	UFUNCTION(BlueprintNativeEvent)
+	void OnQuitClicked();
 	
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UUIEventHolder> UIEventHolder;
@@ -34,12 +44,5 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<ABrickHUDBase> HUD;
 	
-private:
-	virtual bool InitializeGame();
-	virtual bool InitializeUI();
-	
-	
-	
-	
-	
+		
 };

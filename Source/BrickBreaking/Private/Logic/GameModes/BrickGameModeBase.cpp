@@ -34,7 +34,7 @@ void ABrickGameModeBase::BeginPlay()
 	StartGame();
 }
 
-bool ABrickGameModeBase::InitializeGame()
+bool ABrickGameModeBase::InitializeGame_Implementation()
 {
 	FGameplayTag GameLoopTag = FGameplayTag::RequestGameplayTag("GameLoop");
 	
@@ -54,10 +54,13 @@ bool ABrickGameModeBase::InitializeGame()
 		return false;
 	}
 	
+	UIEventHolder->PlayClicked.AddDynamic(this, &ABrickGameModeBase::OnPlayClicked);
+	UIEventHolder->QuitClicked.AddDynamic(this, &ABrickGameModeBase::OnQuitClicked);
+	
 	return true;
 }
 
-bool ABrickGameModeBase::InitializeUI()
+bool ABrickGameModeBase::InitializeUI_Implementation()
 {
 	FGameplayTag GameLoopTag = FGameplayTag::RequestGameplayTag("GameLoop");
 	
@@ -79,10 +82,19 @@ bool ABrickGameModeBase::InitializeUI()
 	return true;
 }
 
-void ABrickGameModeBase::StartGame()
+void ABrickGameModeBase::StartGame_Implementation()
 {
 }
 
-void ABrickGameModeBase::EndGame()
+void ABrickGameModeBase::EndGame_Implementation()
 {
+}
+
+void ABrickGameModeBase::OnPlayClicked_Implementation()
+{
+}
+
+void ABrickGameModeBase::OnQuitClicked_Implementation()
+{
+	
 }

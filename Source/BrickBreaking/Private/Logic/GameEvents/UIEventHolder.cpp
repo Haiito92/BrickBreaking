@@ -2,3 +2,20 @@
 
 
 #include "BrickBreaking/Public/Logic/GameEvents/UIEventHolder.h"
+
+void UUIEventHolder::LaunchEvent(const EUIEventType& EventType)
+{
+	switch (EventType)
+	{
+	case EUIEventType::PlayClicked:
+		{
+			PlayClicked.Broadcast();
+			break;
+		}
+	case EUIEventType::QuitClicked:
+		{
+			QuitClicked.Broadcast();
+			break;
+		}
+	}
+}

@@ -9,8 +9,27 @@
 /**
  * 
  */
-UCLASS()
+UENUM(BlueprintType)
+enum class EUIEventType : uint8
+{
+	PlayClicked,
+	QuitClicked,
+};
+
+UCLASS(BlueprintType, Blueprintable)
 class BRICKBREAKING_API UUIEventHolder : public UObject
 {
 	GENERATED_BODY()
+	
+	
+public:
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="EventType"))
+	void LaunchEvent(const EUIEventType& EventType);
+	
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FButtonClickedSignature);
+	
+	UPROPERTY(BlueprintAssignable)
+	FButtonClickedSignature PlayClicked;
+	UPROPERTY(BlueprintAssignable)
+	FButtonClickedSignature QuitClicked;
 };
