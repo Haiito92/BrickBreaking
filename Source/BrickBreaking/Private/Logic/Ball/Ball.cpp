@@ -4,6 +4,8 @@
 #include "Logic/Ball/Ball.h"
 
 #include "Components/SphereComponent.h"
+#include "Logic/Ball/BounceComponent/ArcadeBounceComponent.h"
+#include "Logic/Ball/BounceComponent/ArcadeBounceResponse.h"
 
 
 // Sets default values
@@ -23,11 +25,56 @@ ABall::ABall()
 void ABall::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	FVector Forward = GetActorForwardVector();
+	Direction.X =  Forward.X;
+	Direction.Y =  Forward.Y;
 }
 
 // Called every frame
 void ABall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	FVector Velocity = Direction * Speed; 
+	FVector Offset = Velocity * DeltaTime;
+	
+	FHitResult Hit;
+	AddActorWorldOffset(Offset, true, &Hit);
+	
+	if (!Hit.bBlockingHit) return;
+	
+	AActor* HitActor = Hit.GetActor();
+	
+	FArcadeBounceResponse BounceResponse = {};
+	if (UArcadeBounceComponent* BounceComponent = HitActor->FindComponentByClass<UArcadeBounceComponent>())
+	{
+		 BounceResponse = BounceComponent->GetBounceResponse(Velocity, Hit);
+	}
+	
+	ApplyBounceResponse(BounceResponse, Hit);
+}
+
+void ABall::ApplyBounceResponse(const FArcadeBounceResponse& Response, const FHitResult& Hit)
+{
+	switch (Response.BounceType)
+	{
+	case EBounceType::Default:
+		{
+			Direction = Direction.MirrorByVector(Hit.Normal);
+			Direction.Z = 0.0f;
+			Direction.Normalize();
+			return;
+		}
+	case EBounceType::Custom:
+		{
+			Direction = Response.CustomDirection;
+			return;
+		}
+	case EBounceType::Sticky:
+		{
+			return;
+		}
+	}
 }
 

@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Ball.generated.h"
 
+struct FArcadeBounceResponse;
 class USphereComponent;
 
 UCLASS()
@@ -25,10 +26,20 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
+	
 protected:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Ball")
 	TObjectPtr<USphereComponent> SphereComponent;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Ball")
 	TObjectPtr<UStaticMeshComponent> Mesh;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ball")
+	float Speed;
+	
+	UPROPERTY(BlueprintReadWrite)
+	FVector Direction;
+	
+private:
+	void ApplyBounceResponse(const FArcadeBounceResponse& Response, const FHitResult& Hit);
 };
