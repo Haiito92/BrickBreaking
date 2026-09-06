@@ -9,6 +9,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Logic/BrickSystem/BrickGrid.h"
 #include "Logic/Camera/GameCamera.h"
+#include "Logic/ScoreSystem/ScoreWorldSubsystem.h"
 
 bool ABrickGameMode::InitializeGame_Implementation()
 {
@@ -37,6 +38,25 @@ bool ABrickGameMode::InitializeGame_Implementation()
 		return false;	
 	}
 	
+	
+	UScoreWorldSubsystem* ScoreSystem = GetWorld()->GetSubsystem<UScoreWorldSubsystem>();
+	if (!IsValid(ScoreSystem))
+	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
+			"[ABrickGameMode] Failed init, invalid Score system.", FColor::Red, 3.0f);
+		return false;
+	}
+	
+	if (!ScoreSystem->InitializeScoreSystem())
+	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
+			"[ABrickGameMode] Failed init, failed init Score system.", FColor::Red, 3.0f);
+		return false;
+	}
+	
+	GridGenerator->InitializeGrid();
+	GridGenerator->CreateGrid();
+	
 	return true;
 }
 
@@ -45,6 +65,4 @@ void ABrickGameMode::StartGame_Implementation()
 	Super::StartGame_Implementation();
 	
 	if (!IsValid(GridGenerator)) return;
-	
-	GridGenerator->CreateGrid();
 }

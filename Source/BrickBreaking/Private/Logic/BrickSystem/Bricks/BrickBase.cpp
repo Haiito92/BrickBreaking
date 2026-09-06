@@ -19,6 +19,11 @@ ABrickBase::ABrickBase()
 	Mesh->SetupAttachment(RootComponent);
 }
 
+void ABrickBase::InitializeBrick()
+{
+	Health = MaxHealth;
+}
+
 void ABrickBase::Hit_Implementation()
 {
 	IBreakable::Hit_Implementation();
@@ -35,8 +40,12 @@ void ABrickBase::Break_Implementation()
 {
 	IBreakable::Break_Implementation();
 	
-	Breaked.Broadcast();
-	
-	Destroy();
+	bBreaked = true;
+	Breaked.Broadcast(this);
+}
+
+int ABrickBase::GetScore() const
+{
+	return Score;
 }
 

@@ -18,13 +18,19 @@ public:
 	// Sets default values for this actor's properties
 	ABrickBase();
 
+	UFUNCTION(BlueprintCallable)
+	void InitializeBrick();
+	
 	virtual void Hit_Implementation() override;
 	virtual void Break_Implementation() override;
+
+	UFUNCTION(BlueprintCallable)
+	int GetScore() const;
 	
-protected:
-	
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBreakedSignature);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBreakedSignature, ABrickBase*, Brick);
 	FBreakedSignature Breaked;
+
+protected:
 	
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UBoxComponent> BoxCollision;
@@ -33,13 +39,16 @@ protected:
 	TObjectPtr<UStaticMeshComponent> Mesh;
 	
 	UPROPERTY(EditAnywhere, Category="Brick")
+	int MaxHealth = 1;
+	
+	UPROPERTY(VisibleAnywhere, Category="Brick")
 	int Health = 1;
 	
 	UPROPERTY()
 	bool bBreaked = false;
 	
 	UPROPERTY(EditAnywhere, Category="Brick")
-	float Score = 10.0f;
+	int Score = 10;
 	
 	
 };
