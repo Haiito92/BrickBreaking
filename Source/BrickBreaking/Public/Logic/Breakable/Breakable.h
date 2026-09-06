@@ -24,4 +24,7 @@ class BRICKBREAKING_API IBreakable
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Hit();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Break();
 };

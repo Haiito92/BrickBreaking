@@ -19,3 +19,24 @@ ABrickBase::ABrickBase()
 	Mesh->SetupAttachment(RootComponent);
 }
 
+void ABrickBase::Hit_Implementation()
+{
+	IBreakable::Hit_Implementation();
+	
+	Health = FMath::Max(Health - 1, 0);
+	
+	if (Health <= 0 && !bBreaked)
+	{
+		IBreakable::Execute_Break(this);
+	}
+}
+
+void ABrickBase::Break_Implementation()
+{
+	IBreakable::Break_Implementation();
+	
+	Breaked.Broadcast();
+	
+	Destroy();
+}
+
