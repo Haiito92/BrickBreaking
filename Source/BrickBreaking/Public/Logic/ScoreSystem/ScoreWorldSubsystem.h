@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "ScoreWorldSubsystem.generated.h"
 
@@ -28,8 +29,11 @@ public:
 	int GetTotalScore() const;
 	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FScoreUpdatedSignature, int, OldScore, int, NewScore);
+	UPROPERTY(BlueprintAssignable)
 	FScoreUpdatedSignature ScoreUpdated;
 	
 private:
 	int TotalScore;
+	
+	FGameplayTag ScoreTag;
 };

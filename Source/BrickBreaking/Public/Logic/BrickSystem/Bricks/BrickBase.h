@@ -28,6 +28,7 @@ public:
 	int GetScore() const;
 	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBreakedSignature, ABrickBase*, Brick);
+	UPROPERTY(BlueprintAssignable)
 	FBreakedSignature Breaked;
 
 protected:
