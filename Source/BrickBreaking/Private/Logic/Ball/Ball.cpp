@@ -6,6 +6,7 @@
 #include "Components/SphereComponent.h"
 #include "Logic/Ball/BounceComponent/ArcadeBounceComponent.h"
 #include "Logic/Ball/BounceComponent/ArcadeBounceResponse.h"
+#include "Logic/Breakable/Breakable.h"
 
 
 // Sets default values
@@ -36,6 +37,11 @@ void ABall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+	ComputePhysics(DeltaTime);
+}
+
+void ABall::ComputePhysics(float DeltaTime)
+{
 	FVector Velocity = Direction * Speed; 
 	FVector Offset = Velocity * DeltaTime;
 	
@@ -46,13 +52,19 @@ void ABall::Tick(float DeltaTime)
 	
 	AActor* HitActor = Hit.GetActor();
 	
+	if (HitActor->Implements<UBreakable>())
+	{
+		IBreakable::Execute_Hit(HitActor);
+	}
+	
 	FArcadeBounceResponse BounceResponse = {};
 	if (UArcadeBounceComponent* BounceComponent = HitActor->FindComponentByClass<UArcadeBounceComponent>())
 	{
-		 BounceResponse = BounceComponent->GetBounceResponse(Velocity, Hit);
+		BounceResponse = BounceComponent->GetBounceResponse(Velocity, Hit);
 	}
 	
 	ApplyBounceResponse(BounceResponse, Hit);
+	return;
 }
 
 void ABall::ApplyBounceResponse(const FArcadeBounceResponse& Response, const FHitResult& Hit)

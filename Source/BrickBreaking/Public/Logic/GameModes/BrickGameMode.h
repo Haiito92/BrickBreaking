@@ -6,6 +6,7 @@
 #include "BrickGameModeBase.h"
 #include "BrickGameMode.generated.h"
 
+class ABrickGrid;
 class AGameCamera;
 /**
  * 
@@ -18,6 +19,11 @@ class BRICKBREAKING_API ABrickGameMode : public ABrickGameModeBase
 public:
 	virtual bool InitializeGame_Implementation() override;
 	
+	virtual void StartGame_Implementation() override;
+	
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<AGameCamera> GameCamera;
+	
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<ABrickGrid> GridGenerator;
 };

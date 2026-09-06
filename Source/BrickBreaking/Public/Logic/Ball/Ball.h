@@ -41,5 +41,6 @@ protected:
 	FVector Direction;
 	
 private:
+	void ComputePhysics(float DeltaTime);
 	void ApplyBounceResponse(const FArcadeBounceResponse& Response, const FHitResult& Hit);
 };

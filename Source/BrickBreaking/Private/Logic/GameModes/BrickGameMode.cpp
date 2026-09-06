@@ -7,6 +7,7 @@
 #include "LittleDebugLibrary.h"
 #include "MessageType.h"
 #include "Kismet/GameplayStatics.h"
+#include "Logic/BrickSystem/BrickGrid.h"
 #include "Logic/Camera/GameCamera.h"
 
 bool ABrickGameMode::InitializeGame_Implementation()
@@ -27,5 +28,23 @@ bool ABrickGameMode::InitializeGame_Implementation()
 		return false;	
 	}
 	
+	GridGenerator = Cast<ABrickGrid>(UGameplayStatics::GetActorOfClass(this, ABrickGrid::StaticClass()));
+	
+	if (!IsValid(GridGenerator))
+	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
+			"[ABrickGameMode] Can't init, invalid GridGenerator.", FColor::Red, 3.0f);
+		return false;	
+	}
+	
 	return true;
+}
+
+void ABrickGameMode::StartGame_Implementation()
+{
+	Super::StartGame_Implementation();
+	
+	if (!IsValid(GridGenerator)) return;
+	
+	GridGenerator->CreateGrid();
 }
