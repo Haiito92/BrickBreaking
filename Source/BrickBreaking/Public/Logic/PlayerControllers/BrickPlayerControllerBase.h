@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "BrickPlayerControllerBase.generated.h"
 
+class UInputMappingContext;
 /**
  * 
  */
@@ -13,4 +14,10 @@ UCLASS()
 class BRICKBREAKING_API ABrickPlayerControllerBase : public APlayerController
 {
 	GENERATED_BODY()
+	
+protected:
+	virtual void SetupInputComponent() override;
+	
+	UPROPERTY(EditAnywhere, Category="Input|Input Mapping Contexts")
+	TArray<TObjectPtr<UInputMappingContext>> InputMappingContexts;
 };
