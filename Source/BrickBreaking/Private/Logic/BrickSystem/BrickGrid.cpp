@@ -15,12 +15,13 @@ ABrickGrid::ABrickGrid()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
+	
+	BrickTag = FGameplayTag::RequestGameplayTag("BrickSystem");
 }
 
 bool ABrickGrid::InitializeGrid()
 {
 	ScoreSystem = GetWorld()->GetSubsystem<UScoreWorldSubsystem>();
-	FGameplayTag BrickTag = FGameplayTag::RequestGameplayTag("BrickSystem");
 	
 	if (!IsValid(ScoreSystem))
 	{
@@ -29,6 +30,8 @@ bool ABrickGrid::InitializeGrid()
 		return false;
 	}
 	
+	Bricks.Empty();
+	
 	return true;
 }
 
@@ -36,7 +39,6 @@ void ABrickGrid::CreateGrid()
 {
 	FVector Origin = GetActorLocation();
 
-	FGameplayTag BrickTag = FGameplayTag::RequestGameplayTag("BrickSystem");
 	
 	UWorld* World = GetWorld();
 	if (!IsValid(BrickClass))
@@ -63,16 +65,53 @@ void ABrickGrid::CreateGrid()
 			}
 			
 			Brick->Breaked.AddDynamic(this, &ABrickGrid::OnBrickBreaked);
+			Bricks.Add(Brick);
 		}
 	}
+	
+	ULittleDebugLibrary::AddOnScreenDebugMessage(BrickTag, EDebugMessageType::Log,
+			"[ABrickGridGenerator] Grid Created. Brick Amount: " + FString::SanitizeFloat(Bricks.Num()), FColor::Magenta, 3.0f);
 }
 
 void ABrickGrid::OnBrickBreaked(ABrickBase* Brick)
 {
-	if (!IsValid(Brick) || !IsValid(ScoreSystem)) return;
+	if (!IsValid(Brick) || !IsValid(ScoreSystem) || !Bricks.Contains(Brick))
+	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(BrickTag, EDebugMessageType::Error,
+			"[ABrickGridGenerator] Can't destroy invalid brick.", FColor::Red, 3.0f);
+
+		return;
+	}
 	
+	DestroyBrick(Brick);
+}
+
+void ABrickGrid::DestroyBrick(ABrickBase* Brick)
+{
 	ScoreSystem->AddScore(Brick->GetScore());
 	
+	Bricks.Remove(Brick);
+	
 	Brick->Destroy();
+	
+	ULittleDebugLibrary::AddOnScreenDebugMessage(BrickTag, EDebugMessageType::Log,
+	                                             "[ABrickGridGenerator] Brick Destroyed. Brick Amount: " + FString::SanitizeFloat(Bricks.Num()), FColor::Magenta, 3.0f);
+
+	if (Bricks.Num() <= 0)
+	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(BrickTag, EDebugMessageType::Log,
+		                                             "[ABrickGridGenerator] Last Brick Breaked", FColor::Magenta, 3.0f);
+		LastBrickBreaked.Broadcast();
+	}
+}
+
+void ABrickGrid::DestroyAllBricks()
+{
+	TArray<ABrickBase*> BrickToDestroy = Bricks;
+	
+	for (ABrickBase* Brick : BrickToDestroy)
+	{
+		DestroyBrick(Brick);
+	}
 }
 

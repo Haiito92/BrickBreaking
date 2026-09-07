@@ -31,9 +31,9 @@ bool ABrickGameMode::InitializeGame_Implementation()
 		return false;	
 	}
 	
-	GridGenerator = Cast<ABrickGrid>(UGameplayStatics::GetActorOfClass(this, ABrickGrid::StaticClass()));
+	BrickGrid = Cast<ABrickGrid>(UGameplayStatics::GetActorOfClass(this, ABrickGrid::StaticClass()));
 	
-	if (!IsValid(GridGenerator))
+	if (!IsValid(BrickGrid))
 	{
 		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
 			"[ABrickGameMode] Can't init, invalid GridGenerator.", FColor::Red, 3.0f);
@@ -56,8 +56,9 @@ bool ABrickGameMode::InitializeGame_Implementation()
 		return false;
 	}
 	
-	GridGenerator->InitializeGrid();
-	GridGenerator->CreateGrid();
+	BrickGrid->InitializeGrid();
+	BrickGrid->CreateGrid();
+	BrickGrid->LastBrickBreaked.AddDynamic(this, &ABrickGameMode::OnLastBrickBreaked);
 		
 	PlayerStart = Cast<APlayerStart>(UGameplayStatics::GetActorOfClass(this, APlayerStart::StaticClass()));
 	if (!IsValid(PlayerStart))
@@ -131,4 +132,9 @@ void ABrickGameMode::EndGame_Implementation(bool Won)
 void ABrickGameMode::OnLastPlayerBallDestroyed()
 {
 	EndGame(false);
+}
+
+void ABrickGameMode::OnLastBrickBreaked()
+{
+	EndGame(true);
 }

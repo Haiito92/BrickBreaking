@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "GameFramework/Actor.h"
 #include "BrickGrid.generated.h"
 
@@ -24,9 +25,20 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void CreateGrid();
 	
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLastBrickBreakedSignature);
+	UPROPERTY(BlueprintAssignable)
+	FLastBrickBreakedSignature LastBrickBreaked;
+	
 protected:
+	
 	UFUNCTION()
 	void OnBrickBreaked(ABrickBase* Brick);
+	
+	UFUNCTION(BlueprintCallable)
+	void DestroyBrick(ABrickBase* Brick);
+
+	UFUNCTION(BlueprintCallable, CallInEditor)
+	void DestroyAllBricks();
 	
 	UPROPERTY(EditAnywhere, Category="Grid|Dimensions", meta=(ClampMin=0.0f))
 	int Rows;
@@ -38,9 +50,15 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Grid|Dimensions", meta=(ClampMin=0.0f))
 	float ColumnPadding = 10.f;
 	
+	UPROPERTY(BlueprintReadWrite)
+	TArray<TObjectPtr<ABrickBase>> Bricks;
+	
 	UPROPERTY(EditAnywhere, Category="Grid|Bricks")
 	TSubclassOf<ABrickBase> BrickClass;
 	
 	UPROPERTY()
 	TObjectPtr<UScoreWorldSubsystem> ScoreSystem;
+	
+private:
+	FGameplayTag BrickTag;
 };

@@ -18,6 +18,7 @@ class BRICKBREAKING_API ABrickGameMode : public ABrickGameModeBase
 	GENERATED_BODY()
 	
 public:
+	
 	virtual bool InitializeGame_Implementation() override;
 	
 	virtual void StartGame_Implementation() override;
@@ -25,12 +26,14 @@ public:
 protected:
 	UFUNCTION()
 	void OnLastPlayerBallDestroyed();
+	UFUNCTION()
+	void OnLastBrickBreaked();
 	
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<AGameCamera> GameCamera;
 	
 	UPROPERTY(BlueprintReadOnly)
-	TObjectPtr<ABrickGrid> GridGenerator;
+	TObjectPtr<ABrickGrid> BrickGrid;
 	
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<APlayerStart> PlayerStart;
