@@ -85,6 +85,17 @@ void ARacket::SpawnBall()
 	Ball->AttachToComponent(ShootingPoint, AttachmentRules);
 }
 
+void ARacket::ResetMovement()
+{
+	FloatingPawnMovement->Velocity = FVector(0.0f, 0.0f, 0.0f);
+	ConsumeMovementInputVector();
+}
+
+void ARacket::SetCanMove(bool InCanMove)
+{
+	bCanMove = InCanMove;
+}
+
 // Called to bind functionality to input
 void ARacket::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -158,6 +169,8 @@ void ARacket::DoShoot_Implementation()
 
 void ARacket::DoMove_Implementation(float InputValue)
 {
+	if (!bCanMove) return;
+	
 	AddMovementInput(GetActorRightVector(), InputValue);	
 }
 

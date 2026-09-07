@@ -54,6 +54,7 @@ bool ABrickGameModeBase::InitializeGame_Implementation()
 	}
 	
 	UIEventHolder->PlayClicked.AddDynamic(this, &ABrickGameModeBase::OnPlayClicked);
+	UIEventHolder->HomeClicked.AddDynamic(this, &ABrickGameModeBase::OnHomeClicked);
 	UIEventHolder->QuitClicked.AddDynamic(this, &ABrickGameModeBase::OnQuitClicked);
 	
 	GameEventHolder = NewObject<UGameEventHolder>(this);
@@ -63,6 +64,8 @@ bool ABrickGameModeBase::InitializeGame_Implementation()
 			"[ABrickGameModeBase] Failed to create UIEventHolder!", FColor::Red, 3.0f);
 		return false;
 	}
+	
+	bGameEnded = false;
 	
 	return true;
 }
@@ -93,13 +96,18 @@ void ABrickGameModeBase::StartGame_Implementation()
 
 void ABrickGameModeBase::EndGame_Implementation(bool Won)
 {
+	if (bGameEnded) return;
 }
 
 void ABrickGameModeBase::OnPlayClicked_Implementation()
 {
 }
 
+
+void ABrickGameModeBase::OnHomeClicked_Implementation()
+{
+}
+
 void ABrickGameModeBase::OnQuitClicked_Implementation()
 {
-	
 }

@@ -34,6 +34,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SpawnBall();
 	
+	UFUNCTION(BlueprintCallable)
+	void ResetMovement();
+
+	UFUNCTION(BlueprintCallable)
+	void SetCanMove(bool InCanMove);
+	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLastBallDestroyedSignature);
 	UPROPERTY(BlueprintAssignable)
 	FLastBallDestroyedSignature LastBallDestroyed;
@@ -73,6 +79,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category="Racket")
 	TObjectPtr<USphereComponent> ShootingPoint;
+	
+	UPROPERTY(BlueprintReadWrite)
+	bool bCanMove;
 	
 	UPROPERTY(EditAnywhere, Category="Racket|Ball")
 	TSubclassOf<ABall> BallClass;

@@ -35,6 +35,8 @@ protected:
 	UFUNCTION(BlueprintNativeEvent)
 	void OnPlayClicked();
 	UFUNCTION(BlueprintNativeEvent)
+	void OnHomeClicked();
+	UFUNCTION(BlueprintNativeEvent)
 	void OnQuitClicked();
 	
 	UPROPERTY(BlueprintReadOnly)
@@ -52,5 +54,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<ABrickHUDBase> HUD;
 	
-		
+	UPROPERTY(BlueprintReadWrite)
+	bool bGameEnded;
 };

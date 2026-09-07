@@ -12,6 +12,11 @@ void UUIEventHolder::LaunchEvent(const EUIEventType& EventType)
 			PlayClicked.Broadcast();
 			break;
 		}
+	case EUIEventType::HomeClicked:
+		{
+			HomeClicked.Broadcast();
+			break;
+		}
 	case EUIEventType::QuitClicked:
 		{
 			QuitClicked.Broadcast();

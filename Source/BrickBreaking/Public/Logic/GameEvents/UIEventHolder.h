@@ -13,6 +13,7 @@ UENUM(BlueprintType)
 enum class EUIEventType : uint8
 {
 	PlayClicked,
+	HomeClicked,
 	QuitClicked,
 };
 
@@ -30,6 +31,8 @@ public:
 	
 	UPROPERTY(BlueprintAssignable)
 	FButtonClickedSignature PlayClicked;
+	UPROPERTY(BlueprintAssignable)
+	FButtonClickedSignature HomeClicked;
 	UPROPERTY(BlueprintAssignable)
 	FButtonClickedSignature QuitClicked;
 };

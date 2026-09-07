@@ -108,6 +108,7 @@ void ABrickGameMode::StartGame_Implementation()
 	
 	FInputModeGameOnly InputModeGameOnly = {};
 	PlayerController->SetInputMode(InputModeGameOnly);
+	PlayerRacket->SetCanMove(true);
 }
 
 void ABrickGameMode::EndGame_Implementation(bool Won)
@@ -117,8 +118,12 @@ void ABrickGameMode::EndGame_Implementation(bool Won)
 	ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
 			"[ABrickGameMode] End Game, victory: " + LexToString(Won), FColor::Emerald, 3.0f);
 	
+	PlayerRacket->SetCanMove(false);
+	PlayerRacket->ResetMovement();
+	
 	FInputModeUIOnly InputModeUIOnly = {};
 	PlayerController->SetInputMode(InputModeUIOnly);
+	PlayerController->SetShowMouseCursor(true);
 	
 	GameEventHolder->LaunchEvent({EGameEventType::GameEnded, Won});
 }
