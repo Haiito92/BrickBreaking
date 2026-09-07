@@ -15,7 +15,7 @@ void ABrickGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	FGameplayTag GameLoopTag = FGameplayTag::RequestGameplayTag("GameLoop");
+	GameLoopTag = FGameplayTag::RequestGameplayTag("GameLoop");
 	
 	if (!InitializeGame())
 	{
@@ -36,8 +36,6 @@ void ABrickGameModeBase::BeginPlay()
 
 bool ABrickGameModeBase::InitializeGame_Implementation()
 {
-	FGameplayTag GameLoopTag = FGameplayTag::RequestGameplayTag("GameLoop");
-	
 	PlayerController = Cast<ABrickPlayerControllerBase>(UGameplayStatics::GetPlayerController(this, 0));
 	if (!IsValid(PlayerController))
 	{
@@ -62,8 +60,6 @@ bool ABrickGameModeBase::InitializeGame_Implementation()
 
 bool ABrickGameModeBase::InitializeUI_Implementation()
 {
-	FGameplayTag GameLoopTag = FGameplayTag::RequestGameplayTag("GameLoop");
-	
 	HUD = Cast<ABrickHUDBase>(PlayerController->GetHUD());
 	if (!IsValid(HUD))
 	{
@@ -86,7 +82,7 @@ void ABrickGameModeBase::StartGame_Implementation()
 {
 }
 
-void ABrickGameModeBase::EndGame_Implementation()
+void ABrickGameModeBase::EndGame_Implementation(bool Won)
 {
 }
 

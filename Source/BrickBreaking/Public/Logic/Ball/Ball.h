@@ -18,14 +18,18 @@ public:
 	// Sets default values for this actor's properties
 	ABall();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable)
+	void SetDirection(const FVector& InDirection);
 	
+	UFUNCTION(BlueprintCallable)
+	void DestroyBall();
+	
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDestroyedSignature, ABall*, Ball);
+	UPROPERTY(BlueprintAssignable)
+	FDestroyedSignature Destroyed;
 	
 protected:
 	UPROPERTY(EditAnywhere, Category = "Ball")
@@ -38,7 +42,7 @@ protected:
 	float Speed;
 	
 	UPROPERTY(BlueprintReadWrite)
-	FVector Direction;
+	FVector Direction = FVector(0.0f, 0.0f, 0.0f);
 	
 private:
 	void ComputePhysics(float DeltaTime);

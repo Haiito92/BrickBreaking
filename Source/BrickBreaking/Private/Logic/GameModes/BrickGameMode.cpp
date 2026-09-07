@@ -6,9 +6,12 @@
 #include "GameplayTagContainer.h"
 #include "LittleDebugLibrary.h"
 #include "MessageType.h"
+#include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
 #include "Logic/BrickSystem/BrickGrid.h"
 #include "Logic/Camera/GameCamera.h"
+#include "Logic/PlayerControllers/BrickPlayerControllerBase.h"
+#include "Logic/Racket/Racket.h"
 #include "Logic/ScoreSystem/ScoreWorldSubsystem.h"
 
 bool ABrickGameMode::InitializeGame_Implementation()
@@ -17,8 +20,6 @@ bool ABrickGameMode::InitializeGame_Implementation()
 	{
 		return false;
 	}
-	
-	FGameplayTag GameLoopTag = FGameplayTag::RequestGameplayTag("GameLoop");
 	
 	GameCamera = Cast<AGameCamera>(UGameplayStatics::GetActorOfClass(this, AGameCamera::StaticClass()));
 	
@@ -56,6 +57,36 @@ bool ABrickGameMode::InitializeGame_Implementation()
 	
 	GridGenerator->InitializeGrid();
 	GridGenerator->CreateGrid();
+		
+	PlayerStart = Cast<APlayerStart>(UGameplayStatics::GetActorOfClass(this, APlayerStart::StaticClass()));
+	if (!IsValid(PlayerStart))
+	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
+			"[ABrickGameMode] Failed init, can't find player start.", FColor::Red, 3.0f);
+		return false;
+	}
+	
+	if (!IsValid(PlayerClass))
+	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
+			"[ABrickGameMode] Failed init, player class invalid.", FColor::Red, 3.0f);
+		return false;
+	}
+	
+	FVector SpawnLocation = PlayerStart->GetActorLocation();
+	FRotator SpawnRotation = PlayerStart->GetActorRotation();
+	PlayerRacket = Cast<ARacket>(GetWorld()->SpawnActor(PlayerClass, &SpawnLocation, &SpawnRotation));
+	if (!IsValid(PlayerRacket))
+	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
+			"[ABrickGameMode] Failed init, failed to create valid player racket.", FColor::Red, 3.0f);
+		return false;
+	}
+	
+	PlayerRacket->LastBallDestroyed.AddDynamic(this, &ABrickGameMode::OnLastPlayerBallDestroyed);
+	PlayerController->Possess(PlayerRacket);
+	
+	PlayerRacket->SpawnBall();
 	
 	return true;
 }
@@ -64,5 +95,19 @@ void ABrickGameMode::StartGame_Implementation()
 {
 	Super::StartGame_Implementation();
 	
-	if (!IsValid(GridGenerator)) return;
+	ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
+			"[ABrickGameMode] Start Game.", FColor::Emerald, 3.0f);
+}
+
+void ABrickGameMode::EndGame_Implementation(bool Won)
+{
+	Super::EndGame_Implementation(Won);
+	
+	ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
+			"[ABrickGameMode] End Game, victory: " + LexToString(Won), FColor::Emerald, 3.0f);
+}
+
+void ABrickGameMode::OnLastPlayerBallDestroyed()
+{
+	EndGame(false);
 }

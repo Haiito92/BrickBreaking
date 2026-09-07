@@ -8,7 +8,9 @@
 #include "LittleDebugLibrary.h"
 #include "MessageType.h"
 #include "Components/BoxComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "Logic/Ball/Ball.h"
 
 
 // Sets default values
@@ -16,6 +18,9 @@ ARacket::ARacket()
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
+	InputsTag = FGameplayTag::RequestGameplayTag("Inputs");
+	PlayerTag = FGameplayTag::RequestGameplayTag("Inputs");
 	
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>("BoxCollision");
 	RootComponent = BoxComponent;
@@ -25,6 +30,14 @@ ARacket::ARacket()
 	
 	FloatingPawnMovement = CreateDefaultSubobject<UFloatingPawnMovement>("FloatingPawnMovement");
 	FloatingPawnMovement->UpdatedComponent = RootComponent;
+	
+	ShootingPoint = CreateDefaultSubobject<USphereComponent>("ShootingPoint");
+	ShootingPoint->SetupAttachment(Mesh);
+	
+	FCollisionResponseContainer ResponseContainer = {};
+	ResponseContainer.SetAllChannels(ECR_Ignore);
+	ShootingPoint->SetCollisionResponseToChannels(ResponseContainer);
+	
 }
 
 // Called when the game starts or when spawned
@@ -40,11 +53,37 @@ void ARacket::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void ARacket::SpawnBall()
+{
+	if (!IsValid(BallClass))
+	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(PlayerTag, EDebugMessageType::Error,
+			"[ARacket] Failed to spawn ball, invalid ball class.", FColor::Red, 3.0f);
+		return;
+	}
+	
+	FVector SpawnLocation = ShootingPoint->GetComponentLocation();
+	FRotator SpawnRotation = ShootingPoint->GetComponentRotation();
+	Ball = Cast<ABall>(GetWorld()->SpawnActor(BallClass, &SpawnLocation, &SpawnRotation));
+	
+	if (!IsValid(Ball))
+	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(PlayerTag, EDebugMessageType::Error,
+			"[ARacket] Failed to spawn ball correctly.", FColor::Red, 3.0f);
+		return;
+	}
+	
+	Ball->Destroyed.AddDynamic(this, &ARacket::OnBallDestroyed);
+	IsBallAttached = true;
+	
+	FAttachmentTransformRules AttachmentRules = {EAttachmentRule::KeepWorld, false};
+	Ball->AttachToComponent(ShootingPoint, AttachmentRules);
+}
+
 // Called to bind functionality to input
 void ARacket::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	FGameplayTag InputsTag = FGameplayTag::RequestGameplayTag("Inputs");
 	
 	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	if (!IsValid(EnhancedInputComponent))
@@ -64,6 +103,16 @@ void ARacket::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		ULittleDebugLibrary::AddOnScreenDebugMessage(InputsTag, EDebugMessageType::Error,
 			"[ARacket] Move action invalid, can't bind.", FColor::Red, 3.0f);
 	}
+	
+	if (IsValid(ShootAction))
+	{
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &ARacket::OnShootActionStarted);
+	}
+	else
+	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(InputsTag, EDebugMessageType::Error,
+			"[ARacket] Shoot action invalid, can't bind.", FColor::Red, 3.0f);
+	}
 }
 
 void ARacket::OnMoveActionTriggered(const FInputActionValue& InputActionValue)
@@ -71,6 +120,35 @@ void ARacket::OnMoveActionTriggered(const FInputActionValue& InputActionValue)
 	float InputValue = InputActionValue.Get<float>();
 	
 	DoMove(InputValue);
+}
+
+void ARacket::OnShootActionStarted(const FInputActionValue& InputActionValue)
+{
+	ULittleDebugLibrary::AddOnScreenDebugMessage(InputsTag, EDebugMessageType::Log,
+			"[ARacket] Shoot action started.", FColor::Cyan, 3.0f);
+	DoShoot();
+}
+
+void ARacket::OnBallDestroyed(ABall* DestroyedBall)
+{
+	if (DestroyedBall != Ball) return;
+	
+	Ball->Destroyed.RemoveDynamic(this, &ARacket::OnBallDestroyed);
+	Ball = nullptr;
+	IsBallAttached = false;
+	
+	LastBallDestroyed.Broadcast();
+}
+
+void ARacket::DoShoot_Implementation()
+{
+	if (!IsBallAttached) return;
+
+	IsBallAttached = false;
+	FDetachmentTransformRules DetachmentRules = {EDetachmentRule::KeepWorld, false};
+	Ball->DetachFromActor(DetachmentRules);
+	
+	Ball->SetDirection(GetActorForwardVector());
 }
 
 void ARacket::DoMove_Implementation(float InputValue)

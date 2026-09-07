@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "GameFramework/GameModeBase.h"
 #include "BrickGameModeBase.generated.h"
 
@@ -28,12 +29,15 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void StartGame();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void EndGame();
+	void EndGame(bool Won);
 	
 	UFUNCTION(BlueprintNativeEvent)
 	void OnPlayClicked();
 	UFUNCTION(BlueprintNativeEvent)
 	void OnQuitClicked();
+	
+	UPROPERTY(BlueprintReadOnly)
+	FGameplayTag GameLoopTag;
 	
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UUIEventHolder> UIEventHolder;

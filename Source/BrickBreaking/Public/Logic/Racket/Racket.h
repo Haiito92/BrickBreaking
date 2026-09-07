@@ -3,10 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "InputActionValue.h"
 #include "GameFramework/Pawn.h"
 #include "Racket.generated.h"
 
+class ABall;
+class USphereComponent;
 class UBoxComponent;
 class UFloatingPawnMovement;
 class UInputAction;
@@ -25,17 +28,35 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void SpawnBall();
+	
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLastBallDestroyedSignature);
+	UPROPERTY(BlueprintAssignable)
+	FLastBallDestroyedSignature LastBallDestroyed;
 protected:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 	void OnMoveActionTriggered(const FInputActionValue& InputActionValue);
+	void OnShootActionStarted(const FInputActionValue& InputActionValue);
 	
 	UFUNCTION(BlueprintNativeEvent)
 	void DoMove(float InputValue);
 	
+	UFUNCTION(BlueprintNativeEvent)
+	void DoShoot();
+	
+	UFUNCTION()
+	void OnBallDestroyed(ABall* DestroyedBall);
+	
+	FGameplayTag InputsTag;
+	FGameplayTag PlayerTag;
+	
 	UPROPERTY(EditAnywhere, Category="Input|Input Actions")
 	TObjectPtr<UInputAction> MoveAction;
+	
+	UPROPERTY(EditAnywhere, Category="Input|Input Actions")
+	TObjectPtr<UInputAction> ShootAction;
 	
 	UPROPERTY(EditAnywhere, Category="Racket")
 	TObjectPtr<UBoxComponent> BoxComponent;
@@ -45,4 +66,16 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category="Racket")
 	TObjectPtr<UFloatingPawnMovement> FloatingPawnMovement;
+	
+	UPROPERTY(EditAnywhere, Category="Racket")
+	TObjectPtr<USphereComponent> ShootingPoint;
+	
+	UPROPERTY(EditAnywhere, Category="Racket|Ball")
+	TSubclassOf<ABall> BallClass;
+	
+	UPROPERTY(BlueprintReadWrite)
+	TObjectPtr<ABall> Ball;
+	
+	UPROPERTY(BlueprintReadWrite)
+	bool IsBallAttached;
 };

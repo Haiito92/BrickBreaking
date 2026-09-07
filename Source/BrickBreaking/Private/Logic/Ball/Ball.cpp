@@ -22,22 +22,23 @@ ABall::ABall()
 	Mesh->SetupAttachment(SphereComponent);
 }
 
-// Called when the game starts or when spawned
-void ABall::BeginPlay()
-{
-	Super::BeginPlay();
-	
-	FVector Forward = GetActorForwardVector();
-	Direction.X =  Forward.X;
-	Direction.Y =  Forward.Y;
-}
-
 // Called every frame
 void ABall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
 	ComputePhysics(DeltaTime);
+}
+
+void ABall::SetDirection(const FVector& InDirection)
+{
+	Direction = InDirection;
+}
+
+void ABall::DestroyBall()
+{
+	Destroyed.Broadcast(this);
+	Destroy();
 }
 
 void ABall::ComputePhysics(float DeltaTime)
