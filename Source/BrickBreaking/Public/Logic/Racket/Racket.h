@@ -28,6 +28,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable)
+	void InitRacket();
+	
+	UFUNCTION(BlueprintCallable)
 	void SpawnBall();
 	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLastBallDestroyedSignature);

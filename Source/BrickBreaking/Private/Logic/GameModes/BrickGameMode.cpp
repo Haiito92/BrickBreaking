@@ -83,10 +83,12 @@ bool ABrickGameMode::InitializeGame_Implementation()
 		return false;
 	}
 	
+	PlayerRacket->InitRacket();
 	PlayerRacket->LastBallDestroyed.AddDynamic(this, &ABrickGameMode::OnLastPlayerBallDestroyed);
 	PlayerController->Possess(PlayerRacket);
 	
 	PlayerRacket->SpawnBall();
+	
 	
 	return true;
 }
@@ -95,8 +97,14 @@ void ABrickGameMode::StartGame_Implementation()
 {
 	Super::StartGame_Implementation();
 	
+	FInputModeUIOnly InputModeUIOnly = {};
+	PlayerController->SetInputMode(InputModeUIOnly);
+	
 	ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
 			"[ABrickGameMode] Start Game.", FColor::Emerald, 3.0f);
+
+	FInputModeUIOnly InputModeGameOnly = {};
+	PlayerController->SetInputMode(InputModeGameOnly);
 }
 
 void ABrickGameMode::EndGame_Implementation(bool Won)
@@ -105,6 +113,9 @@ void ABrickGameMode::EndGame_Implementation(bool Won)
 	
 	ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
 			"[ABrickGameMode] End Game, victory: " + LexToString(Won), FColor::Emerald, 3.0f);
+	
+	FInputModeUIOnly InputModeUIOnly = {};
+	PlayerController->SetInputMode(InputModeUIOnly);
 }
 
 void ABrickGameMode::OnLastPlayerBallDestroyed()

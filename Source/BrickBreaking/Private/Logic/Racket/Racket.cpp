@@ -53,6 +53,11 @@ void ARacket::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void ARacket::InitRacket()
+{
+	
+}
+
 void ARacket::SpawnBall()
 {
 	if (!IsValid(BallClass))
