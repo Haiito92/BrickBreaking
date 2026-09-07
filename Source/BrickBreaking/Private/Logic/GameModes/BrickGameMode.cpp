@@ -10,6 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Logic/BrickSystem/BrickGrid.h"
 #include "Logic/Camera/GameCamera.h"
+#include "Logic/GameEvents/GameEventHolder.h"
 #include "Logic/PlayerControllers/BrickPlayerControllerBase.h"
 #include "Logic/Racket/Racket.h"
 #include "Logic/ScoreSystem/ScoreWorldSubsystem.h"
@@ -103,7 +104,9 @@ void ABrickGameMode::StartGame_Implementation()
 	ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
 			"[ABrickGameMode] Start Game.", FColor::Emerald, 3.0f);
 
-	FInputModeUIOnly InputModeGameOnly = {};
+	GameEventHolder->LaunchEvent({EGameEventType::GameStarted});
+	
+	FInputModeGameOnly InputModeGameOnly = {};
 	PlayerController->SetInputMode(InputModeGameOnly);
 }
 
@@ -116,6 +119,8 @@ void ABrickGameMode::EndGame_Implementation(bool Won)
 	
 	FInputModeUIOnly InputModeUIOnly = {};
 	PlayerController->SetInputMode(InputModeUIOnly);
+	
+	GameEventHolder->LaunchEvent({EGameEventType::GameEnded, Won});
 }
 
 void ABrickGameMode::OnLastPlayerBallDestroyed()
