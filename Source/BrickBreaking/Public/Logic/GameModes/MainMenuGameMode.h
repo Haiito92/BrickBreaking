@@ -13,4 +13,6 @@ UCLASS()
 class BRICKBREAKING_API AMainMenuGameMode : public ABrickGameModeBase
 {
 	GENERATED_BODY()
+	
+	virtual void StartGame_Implementation() override;
 };

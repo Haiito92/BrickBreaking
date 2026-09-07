@@ -2,8 +2,6 @@
 
 
 #include "BrickBreaking/Public/Logic/GameModes/BrickGameMode.h"
-
-#include "GameplayTagContainer.h"
 #include "LittleDebugLibrary.h"
 #include "MessageType.h"
 #include "GameFramework/PlayerStart.h"
@@ -101,6 +99,7 @@ void ABrickGameMode::StartGame_Implementation()
 	
 	FInputModeUIOnly InputModeUIOnly = {};
 	PlayerController->SetInputMode(InputModeUIOnly);
+	PlayerController->SetShowMouseCursor(true);
 	
 	ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
 			"[ABrickGameMode] Start Game.", FColor::Emerald, 3.0f);
@@ -109,6 +108,7 @@ void ABrickGameMode::StartGame_Implementation()
 	
 	FInputModeGameOnly InputModeGameOnly = {};
 	PlayerController->SetInputMode(InputModeGameOnly);
+	PlayerController->SetShowMouseCursor(false);
 	PlayerRacket->SetCanMove(true);
 }
 
