@@ -7,6 +7,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "BrickGameModeBase.generated.h"
 
+class UGameEventHolder;
 class UUIEventHolder;
 class ABrickHUDBase;
 class ABrickPlayerControllerBase;
@@ -41,6 +42,9 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UUIEventHolder> UIEventHolder;
+	
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UGameEventHolder> GameEventHolder;
 	
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<ABrickPlayerControllerBase> PlayerController;

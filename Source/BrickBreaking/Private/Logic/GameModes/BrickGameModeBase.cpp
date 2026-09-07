@@ -7,6 +7,7 @@
 #include "LittleDebugLibrary.h"
 #include "MessageType.h"
 #include "Kismet/GameplayStatics.h"
+#include "Logic/GameEvents/GameEventHolder.h"
 #include "Logic/GameEvents/UIEventHolder.h"
 #include "Logic/HUDs/BrickHUDBase.h"
 #include "Logic/PlayerControllers/BrickPlayerControllerBase.h"
@@ -55,6 +56,14 @@ bool ABrickGameModeBase::InitializeGame_Implementation()
 	UIEventHolder->PlayClicked.AddDynamic(this, &ABrickGameModeBase::OnPlayClicked);
 	UIEventHolder->QuitClicked.AddDynamic(this, &ABrickGameModeBase::OnQuitClicked);
 	
+	GameEventHolder = NewObject<UGameEventHolder>(this);
+	if (!IsValid(GameEventHolder))
+	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
+			"[ABrickGameModeBase] Failed to create UIEventHolder!", FColor::Red, 3.0f);
+		return false;
+	}
+	
 	return true;
 }
 
@@ -68,7 +77,7 @@ bool ABrickGameModeBase::InitializeUI_Implementation()
 		return false;
 	}
 	
-	if (!HUD->InitializeHUD(PlayerController, UIEventHolder))
+	if (!HUD->InitializeHUD(PlayerController, UIEventHolder, GameEventHolder))
 	{
 		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
 			"[ABrickGameModeBase] Failed to init HUD!", FColor::Red, 3.0f);

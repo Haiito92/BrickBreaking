@@ -8,6 +8,7 @@
 
 class ABrickPlayerControllerBase;
 class UUIEventHolder;
+class UGameEventHolder;
 /**
  * 
  */
@@ -17,15 +18,15 @@ class BRICKBREAKING_API ABrickHUDBase : public AHUD
 	GENERATED_BODY()
 	
 public:
-	virtual bool InitializeHUD(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder);
+	virtual bool InitializeHUD(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder, UGameEventHolder* InGameEventHolder);
 	virtual void StartHUD();
 	
 protected:
 	UFUNCTION(BlueprintNativeEvent)
-	bool InternalInitialize(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder);
+	bool InternalInitialize(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder, UGameEventHolder* InGameEventHolder);
 	
 	UFUNCTION(BlueprintImplementableEvent)
-	void ReceiveInternalInitialize(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder);
+	void ReceiveInternalInitialize(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder, UGameEventHolder* InGameEventHolder);
 
 	UFUNCTION(BlueprintNativeEvent)
 	bool CreateWidgets();
@@ -47,4 +48,7 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UUIEventHolder> UIEventHolder;
+	
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UGameEventHolder> GameEventHolder;
 };

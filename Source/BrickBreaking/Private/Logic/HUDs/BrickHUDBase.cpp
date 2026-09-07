@@ -7,16 +7,16 @@
 #include "LittleDebugLibrary.h"
 #include "MessageType.h"
 
-bool ABrickHUDBase::InitializeHUD(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder)
+bool ABrickHUDBase::InitializeHUD(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder, UGameEventHolder* InGameEventHolder)
 {
 	FGameplayTag GameLoopTag = FGameplayTag::RequestGameplayTag("GameLoop");
-	if (!InternalInitialize(InPlayerController, InUIEventHolder))
+	if (!InternalInitialize(InPlayerController, InUIEventHolder, InGameEventHolder))
 	{
 		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
 			"[ABrickHUDBase] Failed internal init!", FColor::Red, 3.0f);
 		return false;
 	}
-	ReceiveInternalInitialize(InPlayerController, InUIEventHolder);
+	ReceiveInternalInitialize(InPlayerController, InUIEventHolder, InGameEventHolder);
 	
 	if (!CreateWidgets())
 	{
@@ -42,9 +42,10 @@ void ABrickHUDBase::StartHUD()
 	ReceiveStartHUD();
 }
 
-bool ABrickHUDBase::InternalInitialize_Implementation(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder)
+bool ABrickHUDBase::InternalInitialize_Implementation(ABrickPlayerControllerBase* InPlayerController, UUIEventHolder* InUIEventHolder, UGameEventHolder* InGameEventHolder)
 {
 	UIEventHolder = InUIEventHolder;
+	GameEventHolder = InGameEventHolder;
 	return true;
 }
 

@@ -18,7 +18,6 @@ class BRICKBREAKING_API ABrickGameMode : public ABrickGameModeBase
 	GENERATED_BODY()
 	
 public:
-	
 	virtual bool InitializeGame_Implementation() override;
 	
 	virtual void StartGame_Implementation() override;
