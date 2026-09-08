@@ -12,6 +12,32 @@
 #include "Logic/HUDs/BrickHUDBase.h"
 #include "Logic/PlayerControllers/BrickPlayerControllerBase.h"
 
+bool ABrickGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate)
+{
+	if (!Super::SetPause(PC, CanUnpauseDelegate))
+	{
+		return false;
+	}
+	
+	bool bIsPaused = IsPaused();
+	if (bIsPaused)
+	{
+		FInputModeGameAndUI InputModeGameAndUI ={};
+		PlayerController->SetInputMode(InputModeGameAndUI);
+		PlayerController->SetShowMouseCursor(true);
+	}
+	else
+	{
+		FInputModeGameOnly InputModeGameOnly ={};
+		PlayerController->SetInputMode(InputModeGameOnly);
+		PlayerController->SetShowMouseCursor(true);
+	}
+	
+	GameEventHolder->LaunchEvent({EGameEventType::PauseStateChanged, bIsPaused});
+	
+	return true;
+}
+
 void ABrickGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -35,30 +61,6 @@ void ABrickGameModeBase::BeginPlay()
 	StartGame();
 }
 
-bool ABrickGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate)
-{
-	if (!Super::SetPause(PC, CanUnpauseDelegate))
-	{
-		return false;
-	}
-	
-	bool bIsPaused = IsPaused();
-	if (bIsPaused)
-	{
-		// Change input mode	
-		// Change imc	
-	}
-	else
-	{
-		// Change input mode	
-		// Change imc	
-	}
-	
-	GameEventHolder->LaunchEvent({EGameEventType::PauseStateChanged, bIsPaused});
-	
-	return true;
-}
-
 bool ABrickGameModeBase::InitializeGame_Implementation()
 {
 	PlayerController = Cast<ABrickPlayerControllerBase>(UGameplayStatics::GetPlayerController(this, 0));
@@ -79,6 +81,7 @@ bool ABrickGameModeBase::InitializeGame_Implementation()
 	
 	UIEventHolder->PlayClicked.AddDynamic(this, &ABrickGameModeBase::OnPlayClicked);
 	UIEventHolder->HomeClicked.AddDynamic(this, &ABrickGameModeBase::OnHomeClicked);
+	UIEventHolder->PauseClicked.AddDynamic(this, &ABrickGameModeBase::OnPauseClicked);
 	UIEventHolder->QuitClicked.AddDynamic(this, &ABrickGameModeBase::OnQuitClicked);
 	
 	GameEventHolder = NewObject<UGameEventHolder>(this);
@@ -123,15 +126,21 @@ void ABrickGameModeBase::EndGame_Implementation(bool Won)
 	if (bGameEnded) return;
 }
 
-void ABrickGameModeBase::OnPlayClicked_Implementation()
+
+void ABrickGameModeBase::OnPlayClicked_Implementation(const FUIEventInfo& EventInfo)
 {
 }
 
 
-void ABrickGameModeBase::OnHomeClicked_Implementation()
+void ABrickGameModeBase::OnHomeClicked_Implementation(const FUIEventInfo& EventInfo)
 {
 }
 
-void ABrickGameModeBase::OnQuitClicked_Implementation()
+
+void ABrickGameModeBase::OnPauseClicked_Implementation(const FUIEventInfo& EventInfo)
+{
+}
+
+void ABrickGameModeBase::OnQuitClicked_Implementation(const FUIEventInfo& EventInfo)
 {
 }

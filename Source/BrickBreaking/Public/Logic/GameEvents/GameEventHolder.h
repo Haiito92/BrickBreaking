@@ -38,7 +38,7 @@ class BRICKBREAKING_API UGameEventHolder : public UObject
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="EventType"))
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="EventInfo"))
 	void LaunchEvent(const FGameEventInfo& EventInfo);
 	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGameEventSignature, const FGameEventInfo&, GameEventInfo);

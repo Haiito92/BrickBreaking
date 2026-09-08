@@ -7,6 +7,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "BrickGameModeBase.generated.h"
 
+struct FUIEventInfo;
 class UGameEventHolder;
 class UUIEventHolder;
 class ABrickHUDBase;
@@ -18,7 +19,11 @@ UCLASS()
 class BRICKBREAKING_API ABrickGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+public:
 	
+	virtual bool SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate = FCanUnpause()) override;
+	
+
 protected:
 	virtual void BeginPlay() override;
 	
@@ -30,17 +35,17 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void StartGame();
 	
-	virtual bool SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate = FCanUnpause()) override;
-	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void EndGame(bool Won);
 	
 	UFUNCTION(BlueprintNativeEvent)
-	void OnPlayClicked();
+	void OnPlayClicked(const FUIEventInfo& EventInfo);
 	UFUNCTION(BlueprintNativeEvent)
-	void OnHomeClicked();
+	void OnHomeClicked(const FUIEventInfo& EventInfo);
 	UFUNCTION(BlueprintNativeEvent)
-	void OnQuitClicked();
+	void OnPauseClicked(const FUIEventInfo& EventInfo);
+	UFUNCTION(BlueprintNativeEvent)
+	void OnQuitClicked(const FUIEventInfo& EventInfo);
 	
 	UPROPERTY(BlueprintReadOnly)
 	FGameplayTag GameLoopTag;
