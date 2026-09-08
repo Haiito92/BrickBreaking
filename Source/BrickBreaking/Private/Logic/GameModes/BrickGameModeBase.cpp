@@ -19,21 +19,27 @@ bool ABrickGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseD
 		return false;
 	}
 	
-	bool bIsPaused = IsPaused();
-	if (bIsPaused)
+	FInputModeGameAndUI InputModeGameAndUI ={};
+	PlayerController->SetInputMode(InputModeGameAndUI);
+	PlayerController->SetShowMouseCursor(true);
+	
+	GameEventHolder->LaunchEvent({EGameEventType::PauseStateChanged, true});
+	
+	return true;
+}
+
+bool ABrickGameModeBase::ClearPause()
+{
+	if (!Super::ClearPause())
 	{
-		FInputModeGameAndUI InputModeGameAndUI ={};
-		PlayerController->SetInputMode(InputModeGameAndUI);
-		PlayerController->SetShowMouseCursor(true);
-	}
-	else
-	{
-		FInputModeGameOnly InputModeGameOnly ={};
-		PlayerController->SetInputMode(InputModeGameOnly);
-		PlayerController->SetShowMouseCursor(true);
+		return false;
 	}
 	
-	GameEventHolder->LaunchEvent({EGameEventType::PauseStateChanged, bIsPaused});
+	FInputModeGameOnly InputModeGameOnly ={};
+	PlayerController->SetInputMode(InputModeGameOnly);
+	PlayerController->SetShowMouseCursor(false);
+	
+	GameEventHolder->LaunchEvent({EGameEventType::PauseStateChanged, false});
 	
 	return true;
 }
@@ -131,14 +137,26 @@ void ABrickGameModeBase::OnPlayClicked_Implementation(const FUIEventInfo& EventI
 {
 }
 
-
 void ABrickGameModeBase::OnHomeClicked_Implementation(const FUIEventInfo& EventInfo)
 {
 }
 
-
 void ABrickGameModeBase::OnPauseClicked_Implementation(const FUIEventInfo& EventInfo)
 {
+	if (!IsValid(PlayerController))
+	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
+			"[ABrickGameModeBase] Can't modify pause, invalid player controller!", FColor::Red, 3.0f);
+		return;
+	}
+	
+	if (IsPaused())
+	{
+		ClearPause();
+		return;
+	}
+	
+	SetPause(PlayerController);
 }
 
 void ABrickGameModeBase::OnQuitClicked_Implementation(const FUIEventInfo& EventInfo)
