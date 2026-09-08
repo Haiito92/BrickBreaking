@@ -17,6 +17,11 @@ void UGameEventHolder::LaunchEvent(const FGameEventInfo& EventInfo)
 			GameEnded.Broadcast(EventInfo);
 			return;
 		}
+	case EGameEventType::PauseStateChanged:
+		{
+			PauseStateChanged.Broadcast(EventInfo);
+			return;
+		}
 	case EGameEventType::PlayerBallShot:
 		{
 			PlayerBallShot.Broadcast(EventInfo);

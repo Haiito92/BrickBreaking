@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputActionValue.h"
 #include "GameFramework/PlayerController.h"
 #include "BrickPlayerControllerBase.generated.h"
 
+class UInputAction;
 class UInputMappingContext;
 /**
  * 
@@ -18,6 +20,12 @@ class BRICKBREAKING_API ABrickPlayerControllerBase : public APlayerController
 protected:
 	virtual void SetupInputComponent() override;
 	
+	UFUNCTION(BlueprintNativeEvent)
+	void OnPauseActionStarted(const FInputActionValue& InputActionValue);
+	
 	UPROPERTY(EditAnywhere, Category="Input|Input Mapping Contexts")
 	TArray<TObjectPtr<UInputMappingContext>> InputMappingContexts;
+	
+	UPROPERTY(EditAnywhere, Category="Input|Input Actions")
+	TObjectPtr<UInputAction> PauseAction;
 };

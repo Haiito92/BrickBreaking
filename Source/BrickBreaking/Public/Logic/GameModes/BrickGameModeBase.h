@@ -29,6 +29,9 @@ protected:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void StartGame();
+	
+	virtual bool SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate = FCanUnpause()) override;
+	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void EndGame(bool Won);
 	

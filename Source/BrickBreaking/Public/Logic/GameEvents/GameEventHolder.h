@@ -15,6 +15,7 @@ enum class EGameEventType : uint8
 	None,
 	GameStarted,
 	GameEnded,
+	PauseStateChanged,
 	PlayerBallShot,
 };
 
@@ -46,6 +47,8 @@ public:
 	FGameEventSignature GameStarted;
 	UPROPERTY(BlueprintAssignable)
 	FGameEventSignature GameEnded;
+	UPROPERTY(BlueprintAssignable)
+	FGameEventSignature PauseStateChanged;
 	UPROPERTY(BlueprintAssignable)
 	FGameEventSignature PlayerBallShot;
 	
