@@ -8698,6 +8698,18 @@
 		{
 			"Path": "$(ProjectDir)/Plugins/LittleDebug/Binaries/Win64/UnrealEditor.modules",
 			"Type": "RequiredResource"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/LittleUI/Binaries/Win64/UnrealEditor-LittleUI.dll",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/LittleUI/Binaries/Win64/UnrealEditor-LittleUI.pdb",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/LittleUI/Binaries/Win64/UnrealEditor.modules",
+			"Type": "RequiredResource"
 		}
 	],
 	"RuntimeDependencies": [
@@ -33576,6 +33588,10 @@
 		{
 			"Path": "$(ProjectDir)/Plugins/LittleDebug/LittleDebug.uplugin",
 			"Type": "UFS"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/LittleUI/LittleUI.uplugin",
+			"Type": "UFS"
 		}
 	],
 	"BuildPlugins": [
@@ -33713,6 +33729,7 @@
 		"LightMixer",
 		"LinuxDeviceProfileSelector",
 		"LittleDebug",
+		"LittleUI",
 		"LocalizableMessage",
 		"LocationServicesBPLibrary",
 		"MP4Utilities",
