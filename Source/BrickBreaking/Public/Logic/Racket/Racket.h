@@ -8,6 +8,7 @@
 #include "GameFramework/Pawn.h"
 #include "Racket.generated.h"
 
+class UGameEventHolder;
 class ABall;
 class USphereComponent;
 class UBoxComponent;
@@ -29,7 +30,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	void InitRacket();
+	void InitRacket(UGameEventHolder* InGameEventHolder);
 	
 	UFUNCTION(BlueprintCallable)
 	void SpawnBall();
@@ -79,6 +80,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category="Racket")
 	TObjectPtr<USphereComponent> ShootingPoint;
+	
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UGameEventHolder> GameEventHolder;
 	
 	UPROPERTY(BlueprintReadWrite)
 	bool bCanMove;

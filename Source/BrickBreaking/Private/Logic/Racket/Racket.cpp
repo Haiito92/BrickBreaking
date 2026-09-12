@@ -11,6 +11,7 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Logic/Ball/Ball.h"
+#include "Logic/GameEvents/GameEventHolder.h"
 
 
 // Sets default values
@@ -53,9 +54,9 @@ void ARacket::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ARacket::InitRacket()
+void ARacket::InitRacket(UGameEventHolder* InGameEventHolder)
 {
-	
+	GameEventHolder = InGameEventHolder;
 }
 
 void ARacket::SpawnBall()
@@ -165,6 +166,8 @@ void ARacket::DoShoot_Implementation()
 	Ball->DetachFromActor(DetachmentRules);
 	
 	Ball->SetDirection(GetActorForwardVector());
+	
+	GameEventHolder->LaunchEvent({EGameEventType::PlayerBallShot});
 }
 
 void ARacket::DoMove_Implementation(float InputValue)

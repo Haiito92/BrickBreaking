@@ -83,7 +83,7 @@ bool ABrickGameMode::InitializeGame_Implementation()
 		return false;
 	}
 	
-	PlayerRacket->InitRacket();
+	PlayerRacket->InitRacket(GameEventHolder);
 	PlayerRacket->LastBallDestroyed.AddDynamic(this, &ABrickGameMode::OnLastPlayerBallDestroyed);
 	PlayerController->Possess(PlayerRacket);
 	
