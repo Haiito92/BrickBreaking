@@ -19,5 +19,13 @@ public:
 	UArcadeBounceComponent();
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void ReactToBounce();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	FArcadeBounceResponse GetBounceResponse(const FVector& InVelocity, const FHitResult& Hit);
+
+protected:
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void ReceiveReactToBounce();
 };

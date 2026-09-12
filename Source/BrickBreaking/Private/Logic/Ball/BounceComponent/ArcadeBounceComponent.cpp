@@ -9,6 +9,11 @@ UArcadeBounceComponent::UArcadeBounceComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
+void UArcadeBounceComponent::ReactToBounce_Implementation()
+{
+	ReceiveReactToBounce();
+}
+
 FArcadeBounceResponse UArcadeBounceComponent::GetBounceResponse_Implementation(const FVector& InVelocity, const FHitResult& Hit)
 {
 	return {};

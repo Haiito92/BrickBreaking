@@ -61,6 +61,7 @@ void ABall::ComputePhysics(float DeltaTime)
 	FArcadeBounceResponse BounceResponse = {};
 	if (UArcadeBounceComponent* BounceComponent = HitActor->FindComponentByClass<UArcadeBounceComponent>())
 	{
+		BounceComponent->ReactToBounce();
 		BounceResponse = BounceComponent->GetBounceResponse(Velocity, Hit);
 	}
 	

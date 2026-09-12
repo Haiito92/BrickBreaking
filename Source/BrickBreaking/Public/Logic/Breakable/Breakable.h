@@ -7,7 +7,7 @@
 #include "Breakable.generated.h"
 
 // This class does not need to be modified.
-UINTERFACE()
+UINTERFACE(Blueprintable)
 class UBreakable : public UInterface
 {
 	GENERATED_BODY()
@@ -27,4 +27,12 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Break();
+	
+protected:
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void ReceiveBreakableHit();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void ReceiveBreak();
 };

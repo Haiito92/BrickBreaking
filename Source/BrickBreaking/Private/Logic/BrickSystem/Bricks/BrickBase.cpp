@@ -30,6 +30,8 @@ void ABrickBase::Hit_Implementation()
 	
 	Health = FMath::Max(Health - 1, 0);
 	
+	Execute_ReceiveBreakableHit(this);
+	
 	if (Health <= 0 && !bBreaked)
 	{
 		IBreakable::Execute_Break(this);
@@ -40,6 +42,7 @@ void ABrickBase::Break_Implementation()
 {
 	IBreakable::Break_Implementation();
 	
+	Execute_ReceiveBreak(this);
 	bBreaked = true;
 	Breaked.Broadcast(this);
 }
