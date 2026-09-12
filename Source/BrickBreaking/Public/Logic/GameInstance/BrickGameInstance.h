@@ -13,4 +13,7 @@ UCLASS()
 class BRICKBREAKING_API UBrickGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
+	
+public:
+	virtual void Init() override;
 };
