@@ -3999,6 +3999,10 @@
 		{
 			"Path": "$(ProjectDir)/Plugins/LittleDebug/LittleDebug.uplugin",
 			"Type": "UFS"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/LittleUI/LittleUI.uplugin",
+			"Type": "UFS"
 		}
 	],
 	"BuildPlugins": [
@@ -4131,6 +4135,7 @@
 		"LightMixer",
 		"LinuxDeviceProfileSelector",
 		"LittleDebug",
+		"LittleUI",
 		"LocalizableMessage",
 		"LocationServicesBPLibrary",
 		"MP4Utilities",
