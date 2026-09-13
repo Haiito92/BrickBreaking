@@ -7,6 +7,7 @@
 #include "LittleDebugLibrary.h"
 #include "MessageType.h"
 #include "Logic/Ball/BounceComponent/ArcadeBounceResponse.h"
+#include "Logic/ScoreSystem/ScoreWorldSubsystem.h"
 
 
 // Sets default values for this component's properties
@@ -37,6 +38,8 @@ void UPaddleBounceComponent::BeginPlay()
 	
 	ULittleDebugLibrary::AddOnScreenDebugMessage(BallSystemTag, EDebugMessageType::Log,
 			"[UPaddleBounceComponent] Half width:" + FString::SanitizeFloat(ComputedPaddleHalfWidth), FColor::White, 3.0f);
+
+	ScoreWorldSubsystem = GetWorld()->GetSubsystem<UScoreWorldSubsystem>();
 }
 
 FArcadeBounceResponse UPaddleBounceComponent::GetBounceResponse_Implementation(const FVector& InVelocity,
@@ -61,5 +64,15 @@ FArcadeBounceResponse UPaddleBounceComponent::GetBounceResponse_Implementation(c
 	BounceResponse.CustomDirection = BounceDir;
 	
 	return BounceResponse;
+}
+
+void UPaddleBounceComponent::ReactToBounce_Implementation()
+{
+	Super::ReactToBounce_Implementation();
+	
+	if (IsValid(ScoreWorldSubsystem))
+	{
+		ScoreWorldSubsystem->ResetCombo();
+	}
 }
 

@@ -18,7 +18,8 @@ bool UScoreWorldSubsystem::InitializeScoreSystem()
 void UScoreWorldSubsystem::AddScore(int ScoreAdded)
 {
 	int OldScore = TotalScore;
-	TotalScore += ScoreAdded;
+	
+	TotalScore += Combo > 1 ? ScoreAdded * Combo : ScoreAdded;
 	
 	ULittleDebugLibrary::AddOnScreenDebugMessage(ScoreTag, EDebugMessageType::Log,
 		"[UScoreWorldSubsystem] New Score: " + FString::SanitizeFloat(TotalScore), FColor::Emerald, 3.0f);
@@ -40,4 +41,20 @@ void UScoreWorldSubsystem::RemoveScore(int ScoreRemoved)
 int UScoreWorldSubsystem::GetTotalScore() const
 {
 	return TotalScore;
+}
+
+void UScoreWorldSubsystem::IncrementCombo()
+{
+	Combo++;
+	
+	ULittleDebugLibrary::AddOnScreenDebugMessage(ScoreTag, EDebugMessageType::Log,
+		"[UScoreWorldSubsystem] New Combo: " + FString::SanitizeFloat(Combo), FColor::Emerald, 3.0f);
+}
+
+void UScoreWorldSubsystem::ResetCombo()
+{
+	Combo = 0;
+	
+	ULittleDebugLibrary::AddOnScreenDebugMessage(ScoreTag, EDebugMessageType::Log,
+		"[UScoreWorldSubsystem] Combo Reset", FColor::Emerald, 3.0f);
 }

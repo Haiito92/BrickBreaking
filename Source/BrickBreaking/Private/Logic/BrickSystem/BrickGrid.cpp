@@ -88,6 +88,7 @@ void ABrickGrid::OnBrickBreaked(ABrickBase* Brick)
 
 void ABrickGrid::DestroyBrick(ABrickBase* Brick)
 {
+	ScoreSystem->IncrementCombo();
 	ScoreSystem->AddScore(Brick->GetScore());
 	
 	Bricks.Remove(Brick);
