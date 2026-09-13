@@ -17,6 +17,14 @@
 			"TargetAllowList": [
 				"Editor"
 			]
+		},
+		{
+			"Name": "LittleUI",
+			"Enabled": true
+		},
+		{
+			"Name": "LittleDebug",
+			"Enabled": true
 		}
 	]
 }

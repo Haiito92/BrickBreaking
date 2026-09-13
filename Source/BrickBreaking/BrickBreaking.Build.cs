@@ -13,7 +13,7 @@ public class BrickBreaking : ModuleRules
 			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "GameplayTags"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "LittleDebug" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "LittleDebug", "FCTween" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
