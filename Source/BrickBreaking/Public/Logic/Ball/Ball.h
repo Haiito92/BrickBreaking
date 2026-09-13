@@ -32,6 +32,9 @@ public:
 	FDestroyedSignature Destroyed;
 	
 protected:
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void ReceiveBallBounce(const FHitResult& HitResult);
+	
 	UPROPERTY(EditAnywhere, Category = "Ball")
 	TObjectPtr<USphereComponent> SphereComponent;
 	

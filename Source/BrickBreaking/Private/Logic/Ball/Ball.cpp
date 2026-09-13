@@ -58,6 +58,8 @@ void ABall::ComputePhysics(float DeltaTime)
 		IBreakable::Execute_Hit(HitActor);
 	}
 	
+	ReceiveBallBounce(Hit);
+	
 	FArcadeBounceResponse BounceResponse = {};
 	if (UArcadeBounceComponent* BounceComponent = HitActor->FindComponentByClass<UArcadeBounceComponent>())
 	{
@@ -78,12 +80,12 @@ void ABall::ApplyBounceResponse(const FArcadeBounceResponse& Response, const FHi
 			Direction = Direction.MirrorByVector(Hit.Normal);
 			Direction.Z = 0.0f;
 			Direction.Normalize();
-			return;
+			break;
 		}
 	case EBounceType::Custom:
 		{
 			Direction = Response.CustomDirection;
-			return;
+			break;
 		}
 	case EBounceType::Sticky:
 		{
