@@ -38,6 +38,10 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FScoreUpdatedSignature ScoreUpdated;
 	
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FComboStartedSignature);
+	UPROPERTY(BlueprintAssignable)
+	FComboStartedSignature ComboStarted;
+	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FComboIncrementedSignature, int, NewCombo);
 	UPROPERTY(BlueprintAssignable)
 	FComboIncrementedSignature ComboIncremented;

@@ -45,7 +45,11 @@ int UScoreWorldSubsystem::GetTotalScore() const
 
 void UScoreWorldSubsystem::IncrementCombo()
 {
+	if (Combo == 0) ComboStarted.Broadcast();
+	
 	Combo++;
+	
+	ComboIncremented.Broadcast(Combo);
 	
 	ULittleDebugLibrary::AddOnScreenDebugMessage(ScoreTag, EDebugMessageType::Log,
 		"[UScoreWorldSubsystem] New Combo: " + FString::SanitizeFloat(Combo), FColor::Emerald, 3.0f);
@@ -54,6 +58,8 @@ void UScoreWorldSubsystem::IncrementCombo()
 void UScoreWorldSubsystem::ResetCombo()
 {
 	Combo = 0;
+	
+	ComboReset.Broadcast();
 	
 	ULittleDebugLibrary::AddOnScreenDebugMessage(ScoreTag, EDebugMessageType::Log,
 		"[UScoreWorldSubsystem] Combo Reset", FColor::Emerald, 3.0f);
