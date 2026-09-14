@@ -4,6 +4,7 @@
 #include "Logic/Ball/Ball.h"
 
 #include "Components/SphereComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Logic/Ball/BounceComponent/ArcadeBounceComponent.h"
 #include "Logic/Ball/BounceComponent/ArcadeBounceResponse.h"
 #include "Logic/Breakable/Breakable.h"
@@ -91,6 +92,20 @@ void ABall::ApplyBounceResponse(const FArcadeBounceResponse& Response, const FHi
 		{
 			return;
 		}
+	}
+	
+	if (FMath::IsNearlyEqual(Direction.Y, 0.0f)) return;
+	
+	const float MinXAngle = 15.0f;
+	float AngleFromX = FMath::RadiansToDegrees(FMath::Asin(Direction.Y));
+	
+	if (AngleFromX < MinXAngle)
+	{
+		float Sign = FMath::Sign(Direction.Y) == 0.0f ? 1.0f : FMath::Sign(Direction.Y);
+		
+		Direction.Y = Sign * FMath::Sin(MinXAngle);
+		
+		Direction.Normalize();
 	}
 }
 
