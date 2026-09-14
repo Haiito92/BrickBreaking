@@ -24,3 +24,19 @@ void ASimpleBrick::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+#if WITH_EDITOR
+void ASimpleBrick::PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+
+	if (PropertyChangedEvent.Property == nullptr) return;
+	
+	FName PropertyName = PropertyChangedEvent.Property->GetFName();
+	
+	if (PropertyName == GET_MEMBER_NAME_CHECKED(ASimpleBrick, MaxHealth))
+	{
+		BrickMeshes.SetNum(MaxHealth);
+	}
+}
+
+#endif

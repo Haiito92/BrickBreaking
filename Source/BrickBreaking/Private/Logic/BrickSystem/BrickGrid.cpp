@@ -41,19 +41,27 @@ void ABrickGrid::CreateGrid()
 
 	
 	UWorld* World = GetWorld();
-	if (!IsValid(BrickClass))
+	if (!IsValid(BrickDefaultClass))
 	{
 		ULittleDebugLibrary::AddOnScreenDebugMessage(BrickTag, EDebugMessageType::Error,
-			"[ABrickGrid] Invalid brick class. Can't create Grid", FColor::Red, 3.0f);
+			"[ABrickGrid] Invalid default brick class. Can't create Grid", FColor::Red, 3.0f);
 		return;
 	}
 	
-	for (int i = 0; i < Columns; ++i)
+	for (int i = 0; i < Rows; ++i)
 	{
-		for (int j = 0; j < Rows; ++j)
+		for (int j = 0; j < Columns; ++j)
 		{
-			FVector Location = FVector(Origin.X + j * ColumnPadding, Origin.Y + i * RowPadding, Origin.Z);
+			FVector Location = FVector(Origin.X + i * RowPadding, Origin.Y + j * ColumnPadding, Origin.Z);
 			FRotator Rotation = FRotator(0.0f, 0.0f, 0.0f);
+			
+			UClass* BrickClass = BrickDefaultClass;
+			
+			int Index = i * Columns + j;
+			if (Index < BrickClasses.Num() )
+			{
+				BrickClass = BrickClasses[Index];
+			}
 			
 			ABrickBase* Brick = Cast<ABrickBase>(World->SpawnActor(BrickClass, &Location, &Rotation));	
 			
@@ -115,4 +123,21 @@ void ABrickGrid::DestroyAllBricks()
 		DestroyBrick(Brick);
 	}
 }
+
+#if WITH_EDITOR
+
+void ABrickGrid::PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+	
+	if (PropertyChangedEvent.Property == nullptr) return;
+	
+	FName PropertyName = PropertyChangedEvent.Property->GetFName();
+	
+	if (PropertyName == GET_MEMBER_NAME_CHECKED(ABrickGrid, Columns) || PropertyName == GET_MEMBER_NAME_CHECKED(ABrickGrid, Rows))
+	{
+		BrickClasses.SetNum(Columns * Rows);
+	}
+}
+#endif
 

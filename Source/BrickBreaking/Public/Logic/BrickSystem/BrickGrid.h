@@ -54,11 +54,21 @@ protected:
 	TArray<TObjectPtr<ABrickBase>> Bricks;
 	
 	UPROPERTY(EditAnywhere, Category="Grid|Bricks")
-	TSubclassOf<ABrickBase> BrickClass;
+	TArray<TSubclassOf<ABrickBase>> BrickClasses;
+	
+	UPROPERTY(EditAnywhere, Category="Grid|Bricks")
+	TSubclassOf<ABrickBase> BrickDefaultClass;
 	
 	UPROPERTY()
 	TObjectPtr<UScoreWorldSubsystem> ScoreSystem;
 	
 private:
 	FGameplayTag BrickTag;
+	
+public:
+	
+#if WITH_EDITOR
+	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
+#endif
+	
 };

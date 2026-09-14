@@ -45,6 +45,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category="Brick")
 	int Health = 1;
 	
+	UPROPERTY(EditAnywhere, Category="Brick")
+	TArray<TObjectPtr<UStaticMesh>> BrickMeshes;
+	
 	UPROPERTY()
 	bool bBreaked = false;
 	
