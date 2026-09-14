@@ -19,7 +19,7 @@ public:
 	// Sets default values for this actor's properties
 	ABrickBase();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void InitializeBrick();
 	
 	virtual void Hit_Implementation() override;
@@ -36,10 +36,10 @@ protected:
 	
 	FGameplayTag BrickTag;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UBoxComponent> BoxCollision;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UStaticMeshComponent> Mesh;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Brick")
@@ -57,5 +57,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Brick")
 	int Score = 10;
 	
+public:
 	
+#if WITH_EDITOR
+	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
+	
+#endif
 };

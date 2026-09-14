@@ -23,7 +23,7 @@ ABrickBase::ABrickBase()
 	BrickTag = FGameplayTag::RequestGameplayTag("BrickSystem");
 }
 
-void ABrickBase::InitializeBrick()
+void ABrickBase::InitializeBrick_Implementation()
 {
 	Health = MaxHealth;
 }
@@ -63,3 +63,21 @@ int ABrickBase::GetScore() const
 	return Score;
 }
 
+
+
+#if WITH_EDITOR
+void ABrickBase::PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+
+	if (PropertyChangedEvent.Property == nullptr) return;
+	
+	FName PropertyName = PropertyChangedEvent.Property->GetFName();
+	
+	if (PropertyName == GET_MEMBER_NAME_CHECKED(ABrickBase, MaxHealth))
+	{
+		BrickMeshes.SetNum(MaxHealth);
+	}
+}
+
+#endif
