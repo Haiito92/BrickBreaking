@@ -10,7 +10,7 @@
 	"DocsURL": "https://github.com/jdcook/fresh_cooked_tweens",
 	"FabURL": "com.epicgames.launcher://ue/Fab/product/8d37a3cd-b7d1-4796-9d9e-b160a52192f8",
 	"SupportURL": "",
-	"EngineVersion": "5.7.0",
+	"EngineVersion": "5.8.0",
 	"CanContainContent": false,
 	"Modules": [
 		{
