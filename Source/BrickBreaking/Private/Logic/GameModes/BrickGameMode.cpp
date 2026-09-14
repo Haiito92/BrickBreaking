@@ -12,6 +12,7 @@
 #include "Logic/PlayerControllers/BrickPlayerControllerBase.h"
 #include "Logic/Racket/Racket.h"
 #include "Logic/ScoreSystem/ScoreWorldSubsystem.h"
+#include "Logic/ShakeSystem/ShakeWorldSubsystem.h"
 
 bool ABrickGameMode::InitializeGame_Implementation()
 {
@@ -51,6 +52,21 @@ bool ABrickGameMode::InitializeGame_Implementation()
 	{
 		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
 			"[ABrickGameMode] Failed init, failed init Score system.", FColor::Red, 3.0f);
+		return false;
+	}
+	
+	UShakeWorldSubsystem* ShakeSystem = GetWorld()->GetSubsystem<UShakeWorldSubsystem>();
+	if (!IsValid(ShakeSystem))
+	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
+			"[ABrickGameMode] Failed init, invalid Shake System.", FColor::Red, 3.0f);
+		return false;
+	}
+	
+	if (!ShakeSystem->InitializeShakeSystem())
+	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
+			"[ABrickGameMode] Failed init, failed init Shake System.", FColor::Red, 3.0f);
 		return false;
 	}
 	
