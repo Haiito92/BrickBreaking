@@ -3,6 +3,8 @@
 
 #include "Logic/BrickSystem/Bricks/BrickBase.h"
 
+#include "LittleDebugLibrary.h"
+#include "MessageType.h"
 #include "Components/BoxComponent.h"
 
 
@@ -17,6 +19,8 @@ ABrickBase::ABrickBase()
 	
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	Mesh->SetupAttachment(RootComponent);
+	
+	BrickTag = FGameplayTag::RequestGameplayTag("BrickSystem");
 }
 
 void ABrickBase::InitializeBrick()
@@ -29,6 +33,13 @@ void ABrickBase::Hit_Implementation()
 	IBreakable::Hit_Implementation();
 	
 	Health = FMath::Max(Health - 1, 0);
+	
+	if (Health > 0 && Health < BrickMeshes.Num())
+	{
+		Mesh->SetStaticMesh(BrickMeshes[Health-1]);
+		//ULittleDebugLibrary::LogAndAddOnScreenDebugMessage(BrickTag, EDebugMessageType::Log,
+		//	"[ABrickBase] Changed mesh to: " + BrickMeshes[Health-1].GetName(), FColor::Orange, 3.0f);
+	}
 	
 	Execute_ReceiveBreakableHit(this);
 	

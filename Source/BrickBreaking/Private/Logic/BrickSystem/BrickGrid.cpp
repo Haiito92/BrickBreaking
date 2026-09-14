@@ -72,6 +72,7 @@ void ABrickGrid::CreateGrid()
 				continue;
 			}
 			
+			Brick->InitializeBrick();
 			Brick->Breaked.AddDynamic(this, &ABrickGrid::OnBrickBreaked);
 			Bricks.Add(Brick);
 		}

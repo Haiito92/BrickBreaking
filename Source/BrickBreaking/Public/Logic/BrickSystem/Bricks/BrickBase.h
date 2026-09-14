@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "GameFramework/Actor.h"
 #include "Logic/Breakable/Breakable.h"
 #include "BrickBase.generated.h"
@@ -32,6 +33,8 @@ public:
 	FBreakedSignature Breaked;
 
 protected:
+	
+	FGameplayTag BrickTag;
 	
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UBoxComponent> BoxCollision;
