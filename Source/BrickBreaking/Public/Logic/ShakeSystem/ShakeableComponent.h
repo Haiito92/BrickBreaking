@@ -8,7 +8,7 @@
 #include "ShakeableComponent.generated.h"
 
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class BRICKBREAKING_API UShakeableComponent : public UActorComponent, public IShakeable
 {
 	GENERATED_BODY()
