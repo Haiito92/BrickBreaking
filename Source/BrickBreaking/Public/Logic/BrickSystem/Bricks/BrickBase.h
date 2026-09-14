@@ -42,10 +42,10 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMeshComponent> Mesh;
 	
-	UPROPERTY(EditAnywhere, Category="Brick")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Brick")
 	int MaxHealth = 1;
 	
-	UPROPERTY(VisibleAnywhere, Category="Brick")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Brick")
 	int Health = 1;
 	
 	UPROPERTY(EditAnywhere, Category="Brick")
