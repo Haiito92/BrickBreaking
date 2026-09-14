@@ -53,7 +53,13 @@ FArcadeBounceResponse UPaddleBounceComponent::GetBounceResponse_Implementation(c
 	float RawOffset = FVector::DotProduct(LocalHit, Paddle->GetActorRightVector());
 	float NormalizedOffset = FMath::Clamp(RawOffset / ComputedPaddleHalfWidth, -1.0f, 1.0f);
 	
+	if (IsValid(AngleCurve))
+	{
+		NormalizedOffset = AngleCurve->GetFloatValue(NormalizedOffset);
+	}
+		
 	float BounceAngle = NormalizedOffset * MaxBounceAngle;
+	
 	
 	FVector BounceDir = Paddle->GetActorForwardVector().RotateAngleAxis(BounceAngle, Paddle->GetActorUpVector());
 	BounceDir.Z = 0.0f;

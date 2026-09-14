@@ -8,6 +8,7 @@
 
 
 class UScoreWorldSubsystem;
+class UCurveFloat;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class BRICKBREAKING_API UPaddleBounceComponent : public UArcadeBounceComponent
@@ -26,8 +27,12 @@ public:
 	
 	float ComputedPaddleHalfWidth = -1.0f;
 	
-	UPROPERTY(EditAnywhere, meta=(ClampMin = 5.0f, ClampMax = 75.0f))
+	UPROPERTY(EditAnywhere, Category="Paddle", meta=(ClampMin = 5.0f, ClampMax = 75.0f))
 	float MaxBounceAngle = 65.0f;
+	
+	UPROPERTY(EditAnywhere, Category="Paddle")
+	TObjectPtr<UCurveFloat> AngleCurve;
+	
 	
 	TObjectPtr<UScoreWorldSubsystem> ScoreWorldSubsystem;
 };
