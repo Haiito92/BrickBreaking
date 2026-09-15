@@ -3,6 +3,7 @@
 
 #include "BrickBreaking/Public/Logic/GameModes/MainMenuGameMode.h"
 
+#include "Logic/HUDs/BrickHUDBase.h"
 #include "Logic/PlayerControllers/BrickPlayerControllerBase.h"
 
 void AMainMenuGameMode::StartGame_Implementation()
@@ -13,4 +14,6 @@ void AMainMenuGameMode::StartGame_Implementation()
 	FInputModeUIOnly InputModeUIOnly = {};
 	PlayerController->SetInputMode(InputModeUIOnly);
 	PlayerController->SetShowMouseCursor(true);
+	
+	HUD->StartHUD();
 }
