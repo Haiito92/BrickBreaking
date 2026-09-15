@@ -145,6 +145,8 @@ void ABrickGameModeBase::OnHomeClicked_Implementation(const FUIEventInfo& EventI
 
 void ABrickGameModeBase::OnPauseClicked_Implementation(const FUIEventInfo& EventInfo)
 {
+	if (bGameEnded) return;
+	
 	if (!IsValid(PlayerController))
 	{
 		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
