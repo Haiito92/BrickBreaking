@@ -3997,6 +3997,10 @@
 			"Type": "UFS"
 		},
 		{
+			"Path": "$(ProjectDir)/Plugins/AntoineHannaRenduTechArtNiagara/AntoineHannaRenduTechArtNiagara.uplugin",
+			"Type": "UFS"
+		},
+		{
 			"Path": "$(ProjectDir)/Plugins/FCTween/FCTween.uplugin",
 			"Type": "UFS"
 		},
@@ -4025,6 +4029,7 @@
 		"AnimationModifierLibrary",
 		"AnimationSharing",
 		"AnimatorKit",
+		"AntoineHannaRenduTechArtNiagara",
 		"AppleImageUtils",
 		"AppleMoviePlayer",
 		"ArchVisCharacter",
