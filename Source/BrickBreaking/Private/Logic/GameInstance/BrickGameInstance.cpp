@@ -5,6 +5,7 @@
 
 #include "Framework/Application/NavigationConfig.h"
 #include "Logic/Audio/AudioGameInstanceSubsystem.h"
+#include "Logic/Inputs/DeviceGameInstanceSubsystem.h"
 
 void UBrickGameInstance::Init()
 {
@@ -14,6 +15,9 @@ void UBrickGameInstance::Init()
 	
 	if (IsValid(AudioSystem)) AudioSystem->InitializeAudioSystem();
 	
+	UDeviceGameInstanceSubsystem* DeviceSystem = GetSubsystem<UDeviceGameInstanceSubsystem>();
+	
+	if (IsValid(DeviceSystem)) DeviceSystem->InitializeDeviceSubsystem();
 	
 	TSharedPtr<FNavigationConfig> NavConfig = FSlateApplication::Get().GetNavigationConfig();
 	if (NavConfig.IsValid())
