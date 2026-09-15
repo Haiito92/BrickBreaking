@@ -36,7 +36,7 @@ protected:
 	void StartGame();
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void EndGame(bool Won);
+	bool EndGame(bool Won);
 	
 	UFUNCTION(BlueprintNativeEvent)
 	void OnPlayClicked(const FUIEventInfo& EventInfo);

@@ -127,9 +127,11 @@ void ABrickGameModeBase::StartGame_Implementation()
 {
 }
 
-void ABrickGameModeBase::EndGame_Implementation(bool Won)
+bool ABrickGameModeBase::EndGame_Implementation(bool Won)
 {
-	if (bGameEnded) return;
+	if (bGameEnded) return false;
+	bGameEnded = true;
+	return true;
 }
 
 

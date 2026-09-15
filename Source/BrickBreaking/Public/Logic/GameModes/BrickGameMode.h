@@ -23,7 +23,7 @@ public:
 	virtual bool InitializeGame_Implementation() override;
 	
 	virtual void StartGame_Implementation() override;
-	virtual void EndGame_Implementation(bool Won) override;
+	virtual bool EndGame_Implementation(bool Won) override;
 protected:
 	UFUNCTION()
 	void OnLastPlayerBallDestroyed();

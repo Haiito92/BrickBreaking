@@ -128,9 +128,12 @@ void ABrickGameMode::StartGame_Implementation()
 	PlayerRacket->SetCanMove(true);
 }
 
-void ABrickGameMode::EndGame_Implementation(bool Won)
+bool ABrickGameMode::EndGame_Implementation(bool Won)
 {
-	Super::EndGame_Implementation(Won);
+	if (!Super::EndGame_Implementation(Won))
+	{
+		return false;
+	}
 	
 	ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Error,
 			"[ABrickGameMode] End Game, victory: " + LexToString(Won), FColor::Emerald, 3.0f);
@@ -143,6 +146,8 @@ void ABrickGameMode::EndGame_Implementation(bool Won)
 	PlayerController->SetShowMouseCursor(true);
 	
 	GameEventHolder->LaunchEvent({EGameEventType::GameEnded, Won});
+	
+	return true;
 }
 
 void ABrickGameMode::OnLastPlayerBallDestroyed()
