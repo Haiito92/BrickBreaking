@@ -5,8 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "GameFramework/GameModeBase.h"
+#include "Logic/Inputs/DeviceGameInstanceSubsystem.h"
 #include "BrickGameModeBase.generated.h"
 
+class UDeviceGameInstanceSubsystem;
 struct FUIEventInfo;
 class UGameEventHolder;
 class UUIEventHolder;
@@ -23,6 +25,7 @@ public:
 	
 	virtual bool SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate = FCanUnpause()) override;
 	virtual bool ClearPause() override;
+	
 
 protected:
 	virtual void BeginPlay() override;
@@ -47,6 +50,9 @@ protected:
 	UFUNCTION(BlueprintNativeEvent)
 	void OnQuitClicked(const FUIEventInfo& EventInfo);
 	
+	UFUNCTION(BlueprintNativeEvent)
+	void OnControlDeviceTypeChanged(const EControlDeviceType& ControlDeviceType);
+	
 	UPROPERTY(BlueprintReadOnly)
 	FGameplayTag GameLoopTag;
 	
@@ -61,6 +67,9 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<ABrickHUDBase> HUD;
+	
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UDeviceGameInstanceSubsystem> DeviceSystem;
 	
 	UPROPERTY(BlueprintReadWrite)
 	bool bGameEnded;

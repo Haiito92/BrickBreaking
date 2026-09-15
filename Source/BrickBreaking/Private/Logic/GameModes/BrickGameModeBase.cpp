@@ -10,6 +10,7 @@
 #include "Logic/GameEvents/GameEventHolder.h"
 #include "Logic/GameEvents/UIEventHolder.h"
 #include "Logic/HUDs/BrickHUDBase.h"
+#include "Logic/Inputs/DeviceGameInstanceSubsystem.h"
 #include "Logic/PlayerControllers/BrickPlayerControllerBase.h"
 
 bool ABrickGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate)
@@ -67,8 +68,44 @@ void ABrickGameModeBase::BeginPlay()
 	StartGame();
 }
 
+void ABrickGameModeBase::OnControlDeviceTypeChanged_Implementation(const EControlDeviceType& ControlDeviceType)
+{
+	ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Log,
+		"[ABrickGameModeBase] GameMode reacts to control device change.", FColor::Magenta, 3.0f);
+	
+	switch (ControlDeviceType)
+	{
+	case EControlDeviceType::None:
+		{
+			return;
+		}
+	case EControlDeviceType::KeyboardAndMouse:
+		{
+			PlayerController->SetShowMouseCursor(true);
+			return;
+		}
+	case EControlDeviceType::Gamepad:
+		{
+			PlayerController->SetShowMouseCursor(false);
+			return;
+		}
+	}
+}
+
 bool ABrickGameModeBase::InitializeGame_Implementation()
 {
+	DeviceSystem = GetGameInstance()->GetSubsystem<UDeviceGameInstanceSubsystem>();
+	
+	if (!IsValid(DeviceSystem))
+	{
+		ULittleDebugLibrary::AddOnScreenDebugMessage(GameLoopTag, EDebugMessageType::Warning,
+			"[ABrickGameModeBase] Failed to get device subsystem!", FColor::Yellow, 3.0f);
+	}
+	else
+	{
+		DeviceSystem->ControlDeviceTypeChanged.AddDynamic(this, &ABrickGameModeBase::OnControlDeviceTypeChanged);	
+	}
+	
 	PlayerController = Cast<ABrickPlayerControllerBase>(UGameplayStatics::GetPlayerController(this, 0));
 	if (!IsValid(PlayerController))
 	{
