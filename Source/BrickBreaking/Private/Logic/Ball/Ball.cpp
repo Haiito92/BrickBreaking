@@ -94,18 +94,21 @@ void ABall::ApplyBounceResponse(const FArcadeBounceResponse& Response, const FHi
 		}
 	}
 	
-	// if (FMath::IsNearlyEqual(Direction.Y, 0.0f)) return;
-	//
-	// const float MinXAngle = 15.0f;
-	// float AngleFromX = FMath::RadiansToDegrees(FMath::Asin(Direction.Y));
-	//
-	// if (AngleFromX < MinXAngle)
-	// {
-	// 	float Sign = FMath::Sign(Direction.Y) == 0.0f ? 1.0f : FMath::Sign(Direction.Y);
-	// 	
-	// 	Direction.Y = Sign * FMath::Sin(MinXAngle);
-	// 	
-	// 	Direction.Normalize();
-	// }
+	if (FMath::IsNearlyEqual(Direction.X, 0.0f)) return;
+	
+	const float MinHorizontalAngle = 15.0f;
+	const float MinHorizontalAngleRad = FMath::DegreesToRadians(MinHorizontalAngle);
+	float CurrentAngle = FMath::RadiansToDegrees(FMath::Asin(FMath::Abs(Direction.X)));
+	
+	if (CurrentAngle < MinHorizontalAngle)
+	{
+		float XSign = FMath::Sign(Direction.X) == 0.0f ? 1.0f : FMath::Sign(Direction.X);
+		float YSign = FMath::Sign(Direction.Y) == 0.0f ? 1.0f : FMath::Sign(Direction.Y);
+		
+		Direction.X = XSign * FMath::Sin(MinHorizontalAngleRad);
+		Direction.Y = YSign * FMath::Cos(MinHorizontalAngleRad);
+		
+		Direction.Normalize();
+	}
 }
 
